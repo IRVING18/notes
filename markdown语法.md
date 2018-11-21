@@ -80,9 +80,9 @@ hello world
   hello world 
 </pre>
 
-## <p style="color: #FF271D;">18、非要设置字体颜色？？？</p>
+## 
 
-
+<p style="color: #FF271D;">18、非要设置字体颜色？？？</p>
 
 
 ![linear](http://pic27.nipic.com/20130305/9252150_153617685375_2.jpg)
