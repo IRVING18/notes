@@ -80,7 +80,7 @@ hello world
   hello world 
 </pre>
 
-## <p style="color: #FF271D;font-size: 30px; font-family: '宋体';">18、非要设置字体颜色？？？</p>
+## <p style="color: #FF271D;">18、非要设置字体颜色？？？</p>
 
 
 
