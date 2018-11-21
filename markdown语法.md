@@ -52,6 +52,22 @@ _斜体_
 |左对齐|居中对齐|右对齐|
 |1|2|3|
 
+16、代码块着色
+```java
+var num = 0;
+for (var i = 0; i < 5; i++) {
+    num+=i;
+}
+console.log(num);
+```
+
+
+
+
+
+
+
+
 ![linear](http://pic27.nipic.com/20130305/9252150_153617685375_2.jpg)
 
 
