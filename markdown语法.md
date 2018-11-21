@@ -5,7 +5,7 @@
 
 4.再来一条[超链接？][1]
 
-5.<img width="50" height=“50” src="http://pic27.nipic.com/20130305/9252150_153617685375_2.jpg"></img>
+5.设置w*h 都是50的图片？ <img width="50" height=“50” src="http://pic27.nipic.com/20130305/9252150_153617685375_2.jpg"></img>
 
 # 6.标题？
 ## 7.二级标题
@@ -29,6 +29,11 @@ you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 ```
 
+## 13、整一下文字样式
+**加粗**
+_斜体_
+~~删除线~~
+**_加粗和斜体_
 
 
 ![linear](http://pic27.nipic.com/20130305/9252150_153617685375_2.jpg)
