@@ -57,7 +57,7 @@ HTTPS 使用到了上面全部三种加密算法。
 * （3） 双方采用对称加密算法和它的"对话密钥"进行加密通信。
 * 上面过程的前两步，又称为"握手阶段"（handshake）。
 # 五. 握手阶段的详细过程
-
+![linear](https://github.com/IRVING18/notes/blob/master/网络协议/file/woshou.png)
 
 "握手阶段"涉及四次通信，我们一个个来看。需要注意的是，"握手阶段"的所有通信都是明文的。
 ###  1) 客户端发出请求（ClientHello）
