@@ -1,10 +1,40 @@
-# test
-[test超连接](http://www.baidu.com)
+# 1.test
+[2.test超连接](http://www.baidu.com)
+
+> 3.竖线来一条？
+
+4.再来一条[超链接？][1]
+
+5.<img width="50" height=“50” src="http://pic27.nipic.com/20130305/9252150_153617685375_2.jpg"></img>
+
+# 6.标题？
+## 7.二级标题
+### 8.三级标题
+- 1、分行1
+- 2、分行2
+- 3、分行3
+- 4、分行4
+
+### 10.另一种小标题？
+* 10、小标题
+* 10、小标题
+* 10、小标题
+
+11. 分类，**加粗！**
+
+12.类似代码块？？
+```
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+```
 
 
-# 标题？
-分类，**加粗！**
-
-* 1、小标题
 
 ![linear](http://pic27.nipic.com/20130305/9252150_153617685375_2.jpg)
+
+
+
+
+
+[1]:https://www.baidu.com
