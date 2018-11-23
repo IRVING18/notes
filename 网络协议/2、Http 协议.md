@@ -65,3 +65,5 @@ HTTP1.1新增了五种请求方法：OPTIONS, PUT, DELETE, TRACE 和 CONNECT 方
 |6|CONNECT|HTTP/1.1协议中预留给能够将连接改为管道方式的代理服务器。|
 |7|OPTIONS|允许客户端查看服务器的性能。|
 |8|TRACE|回显服务器收到的请求，主要用于测试或诊断。|
+
+## 八、
