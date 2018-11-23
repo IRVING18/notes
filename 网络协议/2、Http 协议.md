@@ -23,7 +23,7 @@ HTTP使用统一资源标识符（Uniform Resource Identifiers, URI）来传输�
 ![linear](https://github.com/IRVING18/notes/blob/master/网络协议/file/请求消息.png)
 ## 五、服务器响应消息
 HTTP响应也由四个部分组成，分别是：**状态行、消息报头、空行和响应正文**。  
-![linear](https://github.com/IRVING18/notes/blob/master/网络协议/file/服务端响应消息.jpg)
+![linear](https://github.com/IRVING18/notes/blob/master/网络协议/file/服务器响应消息.jpg)
 ## 六、实例
 下面实例是一点典型的使用GET来传递数据的实例：  
 客户端请求：  
