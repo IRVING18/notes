@@ -85,3 +85,12 @@ HTTP请求头提供了关于请求，响应或者其他的发送实体的信息�
 |Set-Cookie|设置和页面关联的Cookie。Servlet不应使用response.setHeader("Set-Cookie", ...)，而是应使用HttpServletResponse提供的专用方法addCookie。参见下文有关Cookie设置的讨论。|
 |WWW-Authenticate|客户应该在Authorization头中提供什么类型的授权信息？在包含401（Unauthorized）状态行的应答中这个头是必需的。例如，response.setHeader("WWW-Authenticate", "BASIC realm=＼"executives＼"")。注意Servlet一般不进行这方面的处理，而是让Web服务器的专门机制来控制受密码保护页面的访问（例如.htaccess）。|
 
+## 九、HTTP 状态码
+
+当浏览者访问一个网页时，浏览者的浏览器会向网页所在服务器发出请求。当浏览器接收并显示网页前，此网页所在的服务器会返回一个包含HTTP状态码的信息头（server header）用以响应浏览器的请求。  
+HTTP状态码的英文为HTTP Status Code。  
+下面是常见的HTTP状态码：  
+- 200 - 请求成功
+- 301 - 资源（网页等）被永久转移到其它URL
+- 404 - 请求的资源（网页等）不存在
+- 500 - 内部服务器错误
