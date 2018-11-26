@@ -72,9 +72,5 @@ HTTP请求头提供了关于请求，响应或者其他的发送实体的信息�
 
 |应答头|说明|
 |:-    |:------|:-|
-|Allow|
-服务器支持哪些请求方法（如GET、POST等）。|
-|Content-Encoding|
-文档的编码（Encode）方法。只有在解码之后才可以得到Content-Type头指定的内容类型。利用gzip压缩文档能够显著地减少HTML文档的下载时间。Java的GZIPOutputStream可以很方便地进行gzip压缩，但只有Unix上的Netscape和Windows上的IE 4、IE 5才支持它。因此，Servlet应该通过查看Accept-Encoding头（即request.getHeader("Accept-Encoding")）检查浏览器是否支持gzip，为支持gzip的浏览器返回经gzip压缩的HTML页面，为其他浏览器返回普通页面。|
-
+|Allow|服务器支持哪些请求方法（如GET、POST等）。|
 
