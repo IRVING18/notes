@@ -27,8 +27,10 @@
 例：  
 ![linear](https://github.com/IRVING18/notes/blob/master/android/file/arc.jpg)
 #### 9. canvas.drawPath(path,paint);
+#### 10. drawBitmap(Bitmap bitmap, float left, float top, Paint paint) 画 Bitmap
 > 根据path画
 ## 二、Path 路径
+## Path 方法第一类：直接描述路径
 ### 第一类 addXxx -- 添加子图形  
 1. addCircle(float x, float y, float radius, Direction dir) 添加圆
 x, y, radius 这三个参数是圆的基本信息，最后一个参数 dir 是画圆的路径的方向。
@@ -60,3 +62,24 @@ forceMoveTo = false
 
 forceMoveTo = true    
 ![linear](https://github.com/IRVING18/notes/blob/master/android/file/arcToForceMoveTrue.png)
+
+#### 6. close() 和 lineTo(起点坐标) 是完全等价的。
+
+## Path 方法第二类：辅助的设置或计算
+### Path.setFillType(Path.FillType ft) 设置填充方式  
+前面在说 dir 参数的时候提到， Path.setFillType(fillType) 是用来设置图形自相交时的填充算法的：  
+![linear](https://github.com/IRVING18/notes/blob/master/android/file/arc1.png)  
+方法中填入不同的 FillType 值，就会有不同的填充效果。FillType 的取值有四个：
+- EVEN_ODD  
+- WINDING （默认值）  
+- INVERSE_EVEN_ODD  
+- INVERSE_WINDING  
+
+其中后面的两个带有 INVERSE_ 前缀的，只是前两个的反色版本，所以只要把前两个，即 EVEN_ODD 和  WINDING，搞明白就可以了。  
+
+EVEN_ODD 和 WINDING 的原理有点复杂，直接讲出来的话信息量太大，所以我先给一个简单粗暴版的总结，你感受一下： WINDING 是「全填充」，而 EVEN_ODD 是「交叉填充」：  
+
+![linear](https://github.com/IRVING18/notes/blob/master/android/file/arc2.png)  
+之所以叫「简单粗暴版」，是因为这些只是通常情形下的效果；而如果要准确了解它们在所有情况下的效果，就得先知道它们的原理，即它们的具体算法。
+
+### EVEN_ODD 和 WINDING 的原理
