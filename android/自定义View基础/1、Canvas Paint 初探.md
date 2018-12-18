@@ -24,5 +24,5 @@
 > startAngle 开始角度
 > sweepAngle 滑过的角度
 > useCenter 是否填充到圆心  
-例：
-  
+例：  
+![linear](http://pic27.nipic.com/20130305/9252150_153617685375_2.jpg)
