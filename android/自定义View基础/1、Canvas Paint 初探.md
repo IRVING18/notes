@@ -25,4 +25,4 @@
 > sweepAngle 滑过的角度
 > useCenter 是否填充到圆心  
 例：  
-![linear](http://pic27.nipic.com/20130305/9252150_153617685375_2.jpg)
+![linear](https://github.com/IRVING18/notes/blob/master/android/file/arc.png)
