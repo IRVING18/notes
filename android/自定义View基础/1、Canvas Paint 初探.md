@@ -26,3 +26,12 @@
 > useCenter 是否填充到圆心  
 例：  
 ![linear](https://github.com/IRVING18/notes/blob/master/android/file/arc.jpg)
+9. canvas.drawPath(path,paint);
+> 根据path画
+## 二、Path 路径
+### 第一类
+1. addXxx -- 添加子图形  
+addCircle(float x, float y, float radius, Direction dir) 添加圆
+x, y, radius 这三个参数是圆的基本信息，最后一个参数 dir 是画圆的路径的方向。
+> 路径方向有两种：顺时针 (CW clockwise) 和逆时针 (CCW counter-clockwise) 。对于普通情况，这个参数填 CW 还是填 CCW 没有影响。它只是在**需要填充图形** (Paint.Style 为 FILL 或  FILL_AND_STROKE) ，并且**图形出现自相交**时，用于判断填充范围的。比如下面这个图形：
+> ![linear](https://github.com/IRVING18/notes/blob/master/android/file/addcircle.png)
