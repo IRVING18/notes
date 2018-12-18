@@ -83,3 +83,32 @@ EVEN_ODD 和 WINDING 的原理有点复杂，直接讲出来的话信息量太�
 之所以叫「简单粗暴版」，是因为这些只是通常情形下的效果；而如果要准确了解它们在所有情况下的效果，就得先知道它们的原理，即它们的具体算法。
 
 ### EVEN_ODD 和 WINDING 的原理
+#### EVEN_ODD
+> 即 even-odd rule （奇偶原则）：对于平面中的任意一点，向任意方向射出一条射线，这条射线和图形相交的次数（相交才算，相切不算哦）如果是奇数，则这个点被认为在图形内部，是要被涂色的区域；如果是偶数，则这个点被认为在图形外部，是不被涂色的区域。还以左右相交的双圆为例：
+
+![linear](https://github.com/IRVING18/notes/blob/master/android/file/arc3.png)  
+
+> 射线的方向无所谓，同一个点射向任何方向的射线，结果都是一样的，不信你可以试试。
+> 从上图可以看出，射线每穿过图形中的一条线，内外状态就发生一次切换，这就是为什么 EVEN_ODD 是一个「交叉填充」的模式。
+
+#### WINDING
+> 即 non-zero winding rule （非零环绕数原则）：首先，它需要你图形中的所有线条都是有绘制方向的：  
+![linear](https://github.com/IRVING18/notes/blob/master/android/file/arc4.png)   
+
+> 然后，同样是从平面中的点向任意方向射出一条射线，但计算规则不一样：以 0 为初始值，对于射线和图形的所有交点，遇到每个顺时针的交点（图形从射线的左边向右穿过）把结果加 1，遇到每个逆时针的交点（图形从射线的右边向左穿过）把结果减 1，最终把所有的交点都算上，得到的结果如果不是 0，则认为这个点在图形内部，是要被涂色的区域；如果是 0，则认为这个点在图形外部，是不被涂色的区域。
+
+> 和 EVEN_ODD 相同，射线的方向并不影响结果。
+
+所以，我前面的那个「简单粗暴」的总结，对于 WINDING 来说并不完全正确：如果你所有的图形都用相同的方向来绘制，那么 WINDING 确实是一个「全填充」的规则；但如果使用不同的方向来绘制图形，结果就不一样了。
+
+图形的方向：对于添加子图形类方法（如 Path.addCircle() Path.addRect()）的方向，由方法的  dir 参数来控制，这个在前面已经讲过了；而对于画线类的方法（如 Path.lineTo() Path.arcTo()）就更简单了，线的方向就是图形的方向。
+
+所以，完整版的 EVEN_ODD 和 WINDING 的效果应该是这样的：
+
+![linear](https://github.com/IRVING18/notes/blob/master/android/file/arc5.png)  
+
+而 INVERSE_EVEN_ODD 和 INVERSE_WINDING ，只是把这两种效果进行反转而已，你懂了 EVEN_ODD 和  WINDING ，自然也就懂 INVERSE_EVEN_ODD 和 INVERSE_WINDING 了，我就不讲了。
+
+好，花了好长的篇幅来讲 drawPath(path) 和 Path，终于讲完了。同时， Canvas 对图形的绘制就也讲完了。图形简单时，使用 drawCircle() drawRect() 等方法来直接绘制；图形复杂时，使用  drawPath() 来绘制自定义图形。
+
+
