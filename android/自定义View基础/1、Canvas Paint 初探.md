@@ -45,3 +45,17 @@ x, y, radius 这三个参数是圆的基本信息，最后一个参数 dir 是�
 > 贝塞尔曲线：贝塞尔曲线是几何上的一种曲线。它通过起点、控制点和终点来描述一条曲线，主要用于计算机图形学。概念总是说着容易听着难，总之使用它可以绘制很多圆润又好看的图形，但要把它熟练掌握、灵活使用却是不容易的。不过还好的是，一般情况下，贝塞尔曲线并没有什么用处，只在少数场景下绘制一些特殊图形的时候才会用到，所以如果你还没掌握自定义绘制，可以先把贝塞尔曲线放一放，稍后再学也完全没问题。至于怎么学，贝塞尔曲线的知识网上一搜一大把，我这里就不讲了。 
 
 3. cubicTo(float x1, float y1, float x2, float y2, float x3, float y3) / rCubicTo(float x1, float y1, float x2, float y2, float x3, float y3) 画三次贝塞尔曲线
+4. moveTo(float x, float y) / rMoveTo(float x, float y) 移动到目标位置  
+
+不论是直线还是贝塞尔曲线，都是以当前位置作为起点，而不能指定起点。但你可以通过 moveTo(x, y) 或 rMoveTo() 来改变当前位置，从而间接地设置这些方法的起点。
+5. arcTo(RectF oval, float startAngle, float sweepAngle, boolean forceMoveTo) / arcTo(float left, float top, float right, float bottom, float startAngle, float sweepAngle, boolean forceMoveTo) / arcTo(RectF oval, float startAngle, float sweepAngle) 
+
+> 画弧形
+> arcTo() 和 addArc()。它们也是用来画线的，但并不使用当前位置作为弧线的起点。
+> forceMoveTo 绘制是要「抬一下笔移动过去」，还是「直接拖着笔过去」
+
+forceMoveTo = false  
+![linear](https://github.com/IRVING18/notes/blob/master/android/file/arcToForceMoveFalse.png)
+
+forceMoveTo = true    
+![linear](https://github.com/IRVING18/notes/blob/master/android/file/arcToForceMoveTrue.png)
