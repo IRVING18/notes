@@ -58,17 +58,17 @@ x, y, radius 这三个参数是圆的基本信息，最后一个参数 dir 是�
 > forceMoveTo 绘制是要「抬一下笔移动过去」，还是「直接拖着笔过去」
 
 forceMoveTo = false  
-![linear](https://github.com/IRVING18/notes/blob/master/android/file/arcToForceMoveFalse.png)
+![linear](https://github.com/IRVING18/notes/blob/master/android/file/arcToForceMoveFalse.jpg)
 
 forceMoveTo = true    
-![linear](https://github.com/IRVING18/notes/blob/master/android/file/arcToForceMoveTrue.png)
+![linear](https://github.com/IRVING18/notes/blob/master/android/file/arcToForceMoveTrue.jpg)
 
 #### 6. close() 和 lineTo(起点坐标) 是完全等价的。
 
 ## Path 方法第二类：辅助的设置或计算
 ### Path.setFillType(Path.FillType ft) 设置填充方式  
 前面在说 dir 参数的时候提到， Path.setFillType(fillType) 是用来设置图形自相交时的填充算法的：  
-![linear](https://github.com/IRVING18/notes/blob/master/android/file/arc1.png)  
+![linear](https://github.com/IRVING18/notes/blob/master/android/file/arc1.jpg)  
 方法中填入不同的 FillType 值，就会有不同的填充效果。FillType 的取值有四个：
 - EVEN_ODD  
 - WINDING （默认值）  
@@ -79,21 +79,21 @@ forceMoveTo = true
 
 EVEN_ODD 和 WINDING 的原理有点复杂，直接讲出来的话信息量太大，所以我先给一个简单粗暴版的总结，你感受一下： WINDING 是「全填充」，而 EVEN_ODD 是「交叉填充」：  
 
-![linear](https://github.com/IRVING18/notes/blob/master/android/file/arc2.png)  
+![linear](https://github.com/IRVING18/notes/blob/master/android/file/arc2.jpg)  
 之所以叫「简单粗暴版」，是因为这些只是通常情形下的效果；而如果要准确了解它们在所有情况下的效果，就得先知道它们的原理，即它们的具体算法。
 
 ### EVEN_ODD 和 WINDING 的原理
 #### EVEN_ODD
 > 即 even-odd rule （奇偶原则）：对于平面中的任意一点，向任意方向射出一条射线，这条射线和图形相交的次数（相交才算，相切不算哦）如果是奇数，则这个点被认为在图形内部，是要被涂色的区域；如果是偶数，则这个点被认为在图形外部，是不被涂色的区域。还以左右相交的双圆为例：
 
-![linear](https://github.com/IRVING18/notes/blob/master/android/file/arc3.png)  
+![linear](https://github.com/IRVING18/notes/blob/master/android/file/arc3.jpg)  
 
 > 射线的方向无所谓，同一个点射向任何方向的射线，结果都是一样的，不信你可以试试。
 > 从上图可以看出，射线每穿过图形中的一条线，内外状态就发生一次切换，这就是为什么 EVEN_ODD 是一个「交叉填充」的模式。
 
 #### WINDING
 > 即 non-zero winding rule （非零环绕数原则）：首先，它需要你图形中的所有线条都是有绘制方向的：  
-![linear](https://github.com/IRVING18/notes/blob/master/android/file/arc4.png)   
+![linear](https://github.com/IRVING18/notes/blob/master/android/file/arc4.jpg)   
 
 > 然后，同样是从平面中的点向任意方向射出一条射线，但计算规则不一样：以 0 为初始值，对于射线和图形的所有交点，遇到每个顺时针的交点（图形从射线的左边向右穿过）把结果加 1，遇到每个逆时针的交点（图形从射线的右边向左穿过）把结果减 1，最终把所有的交点都算上，得到的结果如果不是 0，则认为这个点在图形内部，是要被涂色的区域；如果是 0，则认为这个点在图形外部，是不被涂色的区域。
 
@@ -105,7 +105,7 @@ EVEN_ODD 和 WINDING 的原理有点复杂，直接讲出来的话信息量太�
 
 所以，完整版的 EVEN_ODD 和 WINDING 的效果应该是这样的：
 
-![linear](https://github.com/IRVING18/notes/blob/master/android/file/arc5.png)  
+![linear](https://github.com/IRVING18/notes/blob/master/android/file/arc5.jpg)  
 
 而 INVERSE_EVEN_ODD 和 INVERSE_WINDING ，只是把这两种效果进行反转而已，你懂了 EVEN_ODD 和  WINDING ，自然也就懂 INVERSE_EVEN_ODD 和 INVERSE_WINDING 了，我就不讲了。
 
