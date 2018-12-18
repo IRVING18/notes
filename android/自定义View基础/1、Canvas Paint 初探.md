@@ -48,7 +48,8 @@ x, y, radius 这三个参数是圆的基本信息，最后一个参数 dir 是�
 4. moveTo(float x, float y) / rMoveTo(float x, float y) 移动到目标位置  
 
 不论是直线还是贝塞尔曲线，都是以当前位置作为起点，而不能指定起点。但你可以通过 moveTo(x, y) 或 rMoveTo() 来改变当前位置，从而间接地设置这些方法的起点。
-5. arcTo(RectF oval, float startAngle, float sweepAngle, boolean forceMoveTo) / arcTo(float left, float top, float right, float bottom, float startAngle, float sweepAngle, boolean forceMoveTo) / arcTo(RectF oval, float startAngle, float sweepAngle) 
+
+5.  arcTo(RectF oval, float startAngle, float sweepAngle, boolean forceMoveTo) / arcTo(float left, float top, float right, float bottom, float startAngle, float sweepAngle, boolean forceMoveTo) / arcTo(RectF oval, float startAngle, float sweepAngle) 
 
 > 画弧形
 > arcTo() 和 addArc()。它们也是用来画线的，但并不使用当前位置作为弧线的起点。
