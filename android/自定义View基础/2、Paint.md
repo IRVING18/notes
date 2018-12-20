@@ -72,3 +72,7 @@ paint.setColorFilter(lightingColorFilter);
 - CornerPathEffect 把所有拐角变成圆角。
 - DiscretePathEffect 把线条进行随机的偏离，让轮廓变得乱七八糟。乱七八糟的方式和程度由参数决定。
 - DashPathEffect 使用虚线来绘制线条。
+- PathDashPathEffect 这个方法比 DashPathEffect 多一个前缀 Path ，所以顾名思义，它是使用一个 Path 来绘制「虚线」。具体看图吧：
+![linear](https://github.com/IRVING18/notes/blob/master/android/file/color6.jpg)
+- SumPathEffect 这是一个组合效果类的 PathEffect 。它的行为特别简单，就是分别按照两种 PathEffect 分别对目标进行绘制。
+- ComposePathEffect 这也是一个组合效果类的 PathEffect 。不过它是先对目标 Path 使用一个 PathEffect，然后再对这个改变后的 Path 使用另一个 PathEffect。
