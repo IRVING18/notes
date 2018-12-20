@@ -76,3 +76,29 @@ paint.setColorFilter(lightingColorFilter);
 ![linear](https://github.com/IRVING18/notes/blob/master/android/file/color6.jpg)
 - SumPathEffect 这是一个组合效果类的 PathEffect 。它的行为特别简单，就是分别按照两种 PathEffect 分别对目标进行绘制。
 - ComposePathEffect 这也是一个组合效果类的 PathEffect 。不过它是先对目标 Path 使用一个 PathEffect，然后再对这个改变后的 Path 使用另一个 PathEffect。
+## 6. paint.setShadowLayer(float radius, float dx, float dy, int shadowColor)
+## 7. paint.setMaskFilter(MaskFilter maskfilter) 
+### 7.1 BlurMaskFilter 模糊效果的 MaskFilter。
+### 7.2 EmbossMaskFilter 浮雕效果的 MaskFilter。 
+## 8.paint.getPath() 获取绘制的 Path
+### 8.1 getFillPath(Path src, Path dst) //从src的path中拿出绘制线路放在dst的path中
+### 8.2 getTextPath(String text, int start, int end, float x, float y, Path path) / getTextPath(char[] text, int index, int count, float x, float y, Path path)
+
+# 三、drawText()相关
+# 四、初始化类
+## 1. paint.reset()
+重置 Paint 的所有属性为默认值。相当于重新 new 一个，不过性能当然高一些啦。
+## 2. paint.set(Paint src)
+把 src 的所有属性全部复制过来。相当于调用 src 所有的 get 方法，然后调用这个 Paint 的对应的 set 方法来设置它们。
+## 3. paint.setFlags(int flags)
+批量设置 flags。相当于依次调用它们的 set 方法。例如： 
+```java
+paint.setFlags(Paint.ANTI_ALIAS_FLAG | Paint.DITHER_FLAG);  
+```
+
+这行代码，和下面这两行是等价的：  
+
+```java
+paint.setAntiAlias(true);  
+paint.setDither(true);  
+```
