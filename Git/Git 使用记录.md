@@ -59,7 +59,7 @@
 
 git reset commit号  
 git checkout -- .  
-=  
+等于 =  
 git reset --hard commit号  
   
 撤销回滚   
