@@ -77,6 +77,7 @@ paint.setColorFilter(lightingColorFilter);
 - SumPathEffect 这是一个组合效果类的 PathEffect 。它的行为特别简单，就是分别按照两种 PathEffect 分别对目标进行绘制。
 - ComposePathEffect 这也是一个组合效果类的 PathEffect 。不过它是先对目标 Path 使用一个 PathEffect，然后再对这个改变后的 Path 使用另一个 PathEffect。
 ## 6. paint.setShadowLayer(float radius, float dx, float dy, int shadowColor)
+> 设置阴影
 ## 7. paint.setMaskFilter(MaskFilter maskfilter) 
 ### 7.1 BlurMaskFilter 模糊效果的 MaskFilter。
 ### 7.2 EmbossMaskFilter 浮雕效果的 MaskFilter。 
