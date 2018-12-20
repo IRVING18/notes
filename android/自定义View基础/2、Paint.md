@@ -67,3 +67,8 @@ paint.setColorFilter(lightingColorFilter);
 ## 4.色彩优化
 ### 4.1 paint.setFilterBitmap(boolean filter)
 设置双线性过滤来优化 Bitmap 放大绘制的效果。
+## 5. paint.setPathEffect(PathEffect effect)
+> 使用 PathEffect 来给图形的轮廓设置效果。对 Canvas 所有的图形绘制有效，也就是 drawLine() drawCircle() drawPath() 这些方法。大概像这样：
+- CornerPathEffect 把所有拐角变成圆角。
+- DiscretePathEffect 把线条进行随机的偏离，让轮廓变得乱七八糟。乱七八糟的方式和程度由参数决定。
+- DashPathEffect 使用虚线来绘制线条。
