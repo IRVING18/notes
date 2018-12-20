@@ -56,6 +56,7 @@
 
 ## 回滚、撤销回滚
 > 前提是commit都已经push过  
+
 git reset commit号  
 git checkout -- .  
 =  
