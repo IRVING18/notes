@@ -43,5 +43,17 @@ paint.setColorFilter(lightingColorFilter);
 #### 1.3.3 ColorMatrixColorFilter
 
 ### 1.4 setXfermode 
-- 
+- **paint.setXfermode(xfermode);**
+> "Xfermode" 其实就是 "Transfer mode"，用 "X" 来代替 "Trans" 是一些美国人喜欢用的简写方式。严谨地讲， Xfermode 指的是你要绘制的内容和 Canvas 的目标位置的内容应该怎样结合计算出最终的颜色。但通俗地说，其实就是要你以绘制的内容作为源图像，以 View 中已有的内容作为目标图像，选取一个 PorterDuff.Mode 作为绘制内容的颜色处理方案。
 
+# 二、效果
+## 1. paint.setAntiAlias (boolean aa) 设置抗锯齿
+## 2. paint.setStyle(Paint.Style style)
+> // FILL 模式，填充  
+> // STROKE 模式，画线  
+> // FILL_AND_STROKE 模式，填充 + 画线  
+## 3.paint.setStrokeWidth(1);  
+## 4.paintsetStrokeCap(Paint.Cap cap)
+> 设置线头的形状。线头形状有三种：BUTT 平头、ROUND 圆头、SQUARE 方头。默认为 BUTT。
+## 5.paint.setStrokeJoin(Paint.Join join)
+> 设置拐角的形状。有三个值可以选择：MITER 尖角、 BEVEL 平角和 ROUND 圆角。默认为 MITER。
