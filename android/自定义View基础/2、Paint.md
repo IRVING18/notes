@@ -52,8 +52,18 @@ paint.setColorFilter(lightingColorFilter);
 > // FILL 模式，填充  
 > // STROKE 模式，画线  
 > // FILL_AND_STROKE 模式，填充 + 画线  
-## 3.paint.setStrokeWidth(1);  
-## 4.paintsetStrokeCap(Paint.Cap cap)
+## 3.线条形状 
+### 3.1 paint.setStrokeWidth(1);  
+### 3.2 paintsetStrokeCap(Paint.Cap cap)
 > 设置线头的形状。线头形状有三种：BUTT 平头、ROUND 圆头、SQUARE 方头。默认为 BUTT。
-## 5.paint.setStrokeJoin(Paint.Join join)
+![linear](https://github.com/IRVING18/notes/blob/master/android/file/color2.jpg)
+### 3.3 .paint.setStrokeJoin(Paint.Join join)
 > 设置拐角的形状。有三个值可以选择：MITER 尖角、 BEVEL 平角和 ROUND 圆角。默认为 MITER。
+![linear](https://github.com/IRVING18/notes/blob/master/android/file/color3.jpg)
+### 3.4 paint.setStrokeMiter(float miter)
+> 这个方法是对于 setStrokeJoin() 的一个补充，它用于设置 MITER 型拐角的延长线的最大值。所谓「延长线的最大值」，是这么一回事：
+![linear](https://github.com/IRVING18/notes/blob/master/android/file/color4.jpg)
+![linear](https://github.com/IRVING18/notes/blob/master/android/file/color5.jpg)
+## 4.色彩优化
+### 4.1 paint.setFilterBitmap(boolean filter)
+设置双线性过滤来优化 Bitmap 放大绘制的效果。
