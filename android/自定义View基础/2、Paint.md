@@ -91,3 +91,30 @@ canvas.drawCircle(300, 300, 200, paint);
 
 ![linear](https://github.com/IRVING18/notes/blob/master/android/file/color5.jpg) 
 
+#### 1.2.5 ComposeShader 混合着色器
+> 构造方法：ComposeShader(Shader shaderA, Shader shaderB, PorterDuff.Mode mode)  
+
+参数：   
+shaderA, shaderB：两个相继使用的 Shader   
+mode: 两个 Shader 的叠加模式，即 shaderA 和 shaderB 应该怎样共同绘制。它的类型是 PorterDuff.Mode 。  
+
+```java
+// 第一个 Shader：头像的 Bitmap
+Bitmap bitmap1 = BitmapFactory.decodeResource(getResources(), R.drawable.batman);  
+Shader shader1 = new BitmapShader(bitmap1, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+
+// 第二个 Shader：从上到下的线性渐变（由透明到黑色）
+Bitmap bitmap2 = BitmapFactory.decodeResource(getResources(), R.drawable.batman_logo);  
+Shader shader2 = new BitmapShader(bitmap2, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+
+// ComposeShader：结合两个 Shader
+Shader shader = new ComposeShader(shader1, shader2, PorterDuff.Mode.SRC_OVER);  
+paint.setShader(shader);
+
+...
+
+canvas.drawCircle(300, 300, 300, paint);  
+```
+> 注意：上面这段代码中我使用了两个 BitmapShader 来作为 ComposeShader() 的参数，而 ComposeShader() 在硬件加速下是不支持两个相同类型的 Shader 的，所以这里也需要关闭硬件加速才能看到效果。
+
+![linear](https://github.com/IRVING18/notes/blob/master/android/file/color6.jpg) 
