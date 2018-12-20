@@ -53,3 +53,18 @@
 
 - git tag -d v1.2.2 //删除本地tag
 - git push origin :refs/tags/v1.2.2 //删除远程tag
+
+## 回滚、撤销回滚
+//前提是commit都已经push过
+git reset commit号
+git checkout -- .
+
+=
+
+git reset --hard commit号
+
+撤销回滚
+git reflog -> 找到commit号
+git reset --hard commit 号
+
+
