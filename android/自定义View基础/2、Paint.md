@@ -63,7 +63,17 @@
 - getTextPath(String text, int start, int end, float x, float y, Path path) / getTextPath(char[] text, int index, int count, float x, float y, Path path)
 
 # 三、drawText()相关
-## 1.
+## 1.paint.setTextSize(60); 
+> 设置文字大小
+## 2.绘制自动换行文字
+> width:宽度
+> align:对齐方式 Layout.Alignment.ALIGN_NORMAL..
+> spacingmult:行距倍数
+> spacingadd:行距距离增加多少
+```java
+StaticLayout staticLayout = new StaticLayout(text,textPaint,width,align,spacingmult,spacingadd,true);
+staticLayout.draw(canvas);
+```
 # 四、初始化类
 ## 1. paint.reset()
 重置 Paint 的所有属性为默认值。相当于重新 new 一个，不过性能当然高一些啦。
