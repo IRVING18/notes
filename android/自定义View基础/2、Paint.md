@@ -66,14 +66,46 @@
 ## 1.paint.setTextSize(60); 
 > 设置文字大小
 ## 2.绘制自动换行文字
-> width:宽度
-> align:对齐方式 Layout.Alignment.ALIGN_NORMAL..
-> spacingmult:行距倍数
-> spacingadd:行距距离增加多少
+> width:宽度  
+> align:对齐方式 Layout.Alignment.ALIGN_NORMAL..  
+> spacingmult:行距倍数  
+> spacingadd:行距距离增加多少  
+
 ```java
 StaticLayout staticLayout = new StaticLayout(text,textPaint,width,align,spacingmult,spacingadd,true);
 staticLayout.draw(canvas);
 ```
+## 3.paint.setTypeface();
+> 设置文字样式  
+> Typeface.DEFAULT  
+> Typeface.SERIF 宋体
+> Typeface.createFromAsset(getContext().getAssets(),"Satisfy-Regular.ttf")   
+> 在资源目录中获取字体样式
+## 4.Paint.setFakeBoldText() 
+> 来加粗文字  
+## 5.Paint.setStrikeThruText() 
+> 来设置删除线  
+## 6.Paint.setUnderlineText()
+> 来设置下划线
+## 7.Paint.setTextSkewX() 
+> 来让文字倾斜
+## 8.Paint.setTextScaleX()
+> 来改变文字宽度
+## 9.Paint.setTextAlign() 
+> 来调整文字对齐方式   
+> Paint.Align.LEFT 左对齐  
+> Paint.Align.CENTER 居中  
+> Paint.Align.RIGHT  右对齐
+## 10.Paint.getFontSpacing() 
+> 来获取推荐的行距
+## 11.Paint.measureText 
+> 测量出文字宽度，让文字可以相邻绘制   
+```java
+canvas.drawText(text1, 50, 200, paint1);
+canvas.drawText(text2, 50 + paint1.measureText(text1), 200, paint2);
+canvas.drawText(text3, 50 + paint1.measureText(text1) + paint2.measureText(text2), 200, paint1);
+```
+
 # 四、初始化类
 ## 1. paint.reset()
 重置 Paint 的所有属性为默认值。相当于重新 new 一个，不过性能当然高一些啦。
