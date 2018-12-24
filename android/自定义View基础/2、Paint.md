@@ -105,7 +105,7 @@ canvas.drawText(text1, 50, 200, paint1);
 canvas.drawText(text2, 50 + paint1.measureText(text1), 200, paint2);
 canvas.drawText(text3, 50 + paint1.measureText(text1) + paint2.measureText(text2), 200, paint1);
 ```
-
+## 12.
 # 四、初始化类
 ## 1. paint.reset()
 重置 Paint 的所有属性为默认值。相当于重新 new 一个，不过性能当然高一些啦。
