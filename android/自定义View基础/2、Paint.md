@@ -105,7 +105,18 @@ canvas.drawText(text1, 50, 200, paint1);
 canvas.drawText(text2, 50 + paint1.measureText(text1), 200, paint2);
 canvas.drawText(text3, 50 + paint1.measureText(text1) + paint2.measureText(text2), 200, paint1);
 ```
-## 12.
+## 12.Paint.getTextBounds(String text, int start, int end, Rect bounds)
+> 获取文字范围的rect  
+> text :文字内容  
+> start: 开始测量角标  
+> end : 结束角标  
+> Rect: 测量完成注入rect返回  
+注：  
+bounds.top 和 bounds.bottom 的y轴坐标原点是baseline  
+应用：  
+- 用于文字居中
+- 比如期望文字在middle位置居中，
+
 # 四、初始化类
 ## 1. paint.reset()
 重置 Paint 的所有属性为默认值。相当于重新 new 一个，不过性能当然高一些啦。
