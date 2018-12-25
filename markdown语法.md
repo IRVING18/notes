@@ -86,6 +86,12 @@ hello world
 <font color=#FF0000>  字体改成红色了 </font>   
 
 
+<font face="黑体">我是黑体字</font>
+<font face="微软雅黑">我是微软雅黑</font>
+<font face="STCAIYUN">我是华文彩云</font>
+<font color=#0099ff size=7 face="黑体">color=#0099ff size=72 face="黑体"</font>
+<font color=#00ffff size=72>color=#00ffff</font>
+<font color=gray size=72>color=gray</font>
 
 
 ![linear](http://pic27.nipic.com/20130305/9252150_153617685375_2.jpg)
