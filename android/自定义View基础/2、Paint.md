@@ -120,7 +120,15 @@ bounds.top 和 bounds.bottom 的y轴坐标原点是baseline
 - 距离可参考 [getTextBounds详解][1]  
 
 ![linear](https://github.com/IRVING18/notes/blob/master/android/file/textbounds.png)
-## 13.
+
+## 13.Paint.getFontMetrics()
+> ascent, descent, top, bottom, leading    
+> 公式：同上bounds计算方式，让文字居中到middle线。   
+> canvas.drawText(text,100,**middle - (ascent + descent) / 2** ,paint)    
+> 同bounds ascent 是负数， descent是正数  
+注：
+
+![linear](https://github.com/IRVING18/notes/blob/master/android/file/metrics.jpg)
 # 四、初始化类
 ## 1. paint.reset()
 重置 Paint 的所有属性为默认值。相当于重新 new 一个，不过性能当然高一些啦。
