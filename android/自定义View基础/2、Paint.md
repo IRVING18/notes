@@ -115,7 +115,9 @@ canvas.drawText(text3, 50 + paint1.measureText(text1) + paint2.measureText(text2
 bounds.top 和 bounds.bottom 的y轴坐标原点是baseline  
 应用：  
 - 用于文字居中
-- 比如期望文字在middle位置居中，
+- 比如期望文字在middle位置居中，结论性公式：就是canvas.drawText(text,100,**middle - (bounds.top + bounds.bottom) / 2** ,paint)   
+- 原理：bounds.top相对baseLine永远是负数，而且绝对值top比bottom大。所以top+bottom 一直是个负数，而且（top+bottom）/2 的绝对值就是middle线和baseline的距离.
+- 距离可参考 [line]
 
 # 四、初始化类
 ## 1. paint.reset()
