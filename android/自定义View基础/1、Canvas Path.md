@@ -29,6 +29,10 @@
 #### 9. canvas.drawPath(path,paint);
 #### 10. drawBitmap(Bitmap bitmap, float left, float top, Paint paint) 画 Bitmap
 > 根据path画
+#### 11. canvas.save();
+> 保存画布位置
+#### 12. canvas.restore();
+> 还原画布位置，回到save时
 ## 二、Path 路径
 ## Path 方法第一类：直接描述路径
 ### 第一类 addXxx -- 添加子图形  
