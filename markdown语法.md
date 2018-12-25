@@ -81,7 +81,12 @@ hello world
 </pre>
 
 ## 18、字体颜色来一个
+
+
 <font color=#FF0000>  字体改成红色了 </font>   
+
+
+
 
 ![linear](http://pic27.nipic.com/20130305/9252150_153617685375_2.jpg)
 
