@@ -36,6 +36,7 @@
 #### 13. Canvas.saveLayer() 
 > 来设置离屏缓冲  
 > 场景： 在paint.setXfermode()的时候要用，不然渲染出来的会有问题
+#### 14. canvas
 ## 二、Path 路径
 ## Path 方法第一类：直接描述路径
 ### 第一类 addXxx -- 添加子图形  
