@@ -25,6 +25,7 @@
 # 二、Matrix 矩阵
 ## 1、matrix.postTranslate(dx,dy);
 > 平移
+
 例子：
 ```java
   Matrix matrix = new Matrix();
@@ -39,6 +40,7 @@
 > 旋转  
 ## 4、matrix.postSkew(sx,sy)
 > 错切   
+
 **注意：  
 1、matrix.preXX();矩阵前乘   
 2、matrix.postXX();矩阵后乘   
@@ -47,6 +49,7 @@
 # 三、Camera 三维变化
 ## 1、camera.rotateZ(degress);
 > 围着Z轴转
+
 **例子：**     
 ```java
 Camera camera = new Camera();
