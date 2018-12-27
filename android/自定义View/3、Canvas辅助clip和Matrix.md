@@ -54,6 +54,9 @@
 **0-90度画左边，90-180画右边。**
 - 1.在rotate之前去clip剪切，需要0-90切左边，90-180切右边。
 - 2.在rotate之后去clip剪切，只需要一直都切左边，因为rotate的过程中Y轴一直在转。
+
+![linear](https://github.com/IRVING18/notes/blob/master/android/file/flip.gif)
+
 **例子：**     
 ```java
 Camera camera = new Camera();
