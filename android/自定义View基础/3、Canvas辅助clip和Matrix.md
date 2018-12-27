@@ -47,7 +47,7 @@
 3、matrix.setXX();   
 有三种，矩阵不太懂 todo 有时间好好学吧**
 # 三、Camera 三维变化
-## 1、camera.rotateZ(degress);
+## 1、camera.rotateZ(degress);rotateX();rotateY();
 > 围着Z轴转
 
 **例子：**     
@@ -62,6 +62,39 @@ camera.restore();
 canvas.drawBitmap(bitmap,x,y,paint);
 canvas.restore();
 ```
+## 2、修正版
+> 即从bitmap中间变化，显示成要的效果。
 
-
-
+### 2.1 Matrix修正
+```java
+  centerX：bitmap的中心点x
+  centerY: bitmap的中心点y
+  canvas.save();
+  camera.save();
+  //获取matrix矩阵
+  camera.getMatrix(matrix);
+  camera.restore();
+  //矩阵修正
+  matrix.preTranslate(-centerX,-centerY);
+  matrix.postTranslate(centerX,centerY);
+  canvas.concat(matrix);
+  canvas.drawBitmap(bitmap,x,y,paint);
+  canvas.restore();
+```
+### 2.2 canvas.translate()修正
+```java
+  canvas.save();
+  camera.save();
+  camera.rotateY(30);
+  //移动到bitmap中心
+  canvas.translate(centerX,centerY);
+  //camera投影到canvas
+  camera.applyToCanvas(canvas);
+  //平移回来
+  canvas.translate(-centerX,-centerY);
+  camera.restore();
+  canvas.drawBitmap(bitmap, point2.x, point2.y, paint);
+  canvas.restore();
+```
+**注
+  理解不一定正确**
