@@ -49,7 +49,11 @@
 # 三、Camera 三维变化
 ## 1、camera.rotateZ(degress);rotateX();rotateY();
 > 围着Z轴转
-
+## 注意：rotateX的过程中坐标轴是在转的。
+**在画翻页的过程中容易理解些，翻页效果就是围着Y轴转**    
+**0-90度画左边，90-180画右边。**
+- 1.在rotate之前去clip剪切，需要0-90切左边，90-180切右边。
+- 2.在rotate之后去clip剪切，只需要一直都切左边，因为rotate的过程中Y轴一直在转。
 **例子：**     
 ```java
 Camera camera = new Camera();
