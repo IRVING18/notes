@@ -1,0 +1,8 @@
+1、创建library
+2、创建runalone包
+3、gradle.properties创建
+4、build.gradle修改
+5、**ApplicationLike用于回调，在app的application中初始化
+6、app中gradle.properties中要加入library包名
+
+![](https://note.youdao.com/yws/public/resource/f3912ed18cbf0c5a0d2c6cfb3d0f207b/xmlnote/899F96CD8F2E416B9414D77FEA070C59/2282)
