@@ -1,5 +1,5 @@
 ## RecyclerView实现支付宝自动收缩效果
-### 思路
+### 一、思路
 - 1.首先实现渐变Toolbar效果，通过recyclerView监听滑动。先让上边的Head1的alpha从1到0，然后在让Head2的alpha从0到1.
 - 2.自动收缩，在中间值划分，小于中间值收缩到0，大于中间值扩展到最大值。
 - 3.收缩功能实现：使用recyclerview.smoothScrollBy(dx,dy,InInterpolator);    
@@ -11,8 +11,10 @@
   > 实践起来好像还可以用，只要收缩高度不要太夸张就好。   
   
 - 5.获取收缩高度。   
-  > topHeight获取的话，通过
-### 获取topHeight关键代码
+  > topHeight获取的话，通过linearlayoutManager获取item，然后获取高度。   
+  > 1.但是需要在recyclerview的layout()方法之后。所以我直接放在了，scroll监听中，只测量一次。   
+  > 2.操作getChildAt()很容易throwException，因为recyclerview回收之后就容易出问题，所以try一下。
+### 二、获取topHeight关键代码
 ```java
 /**
      * 获取topHeight
@@ -49,7 +51,7 @@
     }
 
 ```
-### 收缩功能关键代码
+### 三、收缩功能关键代码
 ```java
 mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             private float halfHeight;
