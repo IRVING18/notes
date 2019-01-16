@@ -6,9 +6,9 @@
   > dx dy:代表的是相对当前位置xy轴滑动的距离，而不是scrollTo的功能。而且recyclerview的scrollTo功能没有系统实现代码，调用也不好使。
   
 - 4.如果解决当recyclerview就不够扩展的，怎么办？   
-  > recyclerView.computeVerticalScrollRange();获取未被回收的item的总体高度。   
-  > 退而求其次，只能用这个货来鉴定了，如果这个货 > 收缩的高度 + recyclerView控件的固定显示高度，就让这个功能生效，否则不生效。    
-  > 实践起来好像还可以用，只要收缩高度不要太夸张就好。   
+  > 1.recyclerView.computeVerticalScrollRange();获取未被回收的item的总体高度。   
+  > 2.退而求其次，只能用这个货来鉴定了，如果这个货 > 收缩的高度 + recyclerView控件的固定显示高度，就让这个功能生效，否则不生效。    
+  > 3.实践起来好像还可以用，只要收缩高度不要太夸张就好。   
   
 - 5.获取收缩高度。   
   > topHeight获取的话，通过linearlayoutManager获取item，然后获取高度。   
