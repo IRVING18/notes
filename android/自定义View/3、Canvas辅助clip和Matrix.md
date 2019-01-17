@@ -105,3 +105,32 @@ canvas.restore();
 ```
 **注
   理解不一定正确，先死记一下，慢慢消化**
+  
+### 2.3 方式三
+```java
+
+        /**
+         * 方式三
+         */
+        canvas.save();
+        camera.save();
+        //旋转
+        camera.rotateY(degree);
+        //移动到中心点
+        canvas.translate(center2X, centerY);
+        //投影到canvas
+        camera.applyToCanvas(canvas);
+        //平移回来
+        canvas.translate(-center2X, -centerY);
+        camera.restore();
+
+        //小于90度只画左半边
+        //大于90度只画右边
+        //但是clip在rotateY之后就一直只画左边就ok，因为rotate过程中坐标轴也会跟着变。
+        canvas.clipRect(center2X - bitmap.getWidth() / 2, centerY - bitmap.getHeight() / 2, center2X, centerY + bitmap.getHeight() / 2);
+
+
+        canvas.drawBitmap(bitmap, center2X - bitmap.getWidth() / 2, centerY - bitmap.getHeight() / 2, paint);
+        canvas.restore();
+
+```
