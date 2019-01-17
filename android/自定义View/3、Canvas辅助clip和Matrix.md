@@ -4,7 +4,7 @@
 ## 2、canvas.clipPath(path);
 > 按path裁剪
 - path.setFillType();决定剪裁的是path本身，还是path之外的。   
-参考： [path](https://github.com/IRVING18/notes/blob/master/android/自定义View基础/1、Canvas%20Path.md)
+参考： [path](https://github.com/IRVING18/notes/blob/master/android/%E8%87%AA%E5%AE%9A%E4%B9%89View/1%E3%80%81Canvas%20Path.md)
 ## 3、canvas.translate(dx,dy);
 > 平移画布
 > 注意：在和camera结合使用时，移动camera坐标系需要移动过去画，画完要移动回来不然看不见。不知道为什么，先记下来
