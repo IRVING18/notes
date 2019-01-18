@@ -27,8 +27,9 @@
 例：  
 ![linear](https://github.com/IRVING18/notes/blob/master/android/file/arc.jpg)
 #### 9. canvas.drawPath(path,paint);
-#### 10. drawBitmap(Bitmap bitmap, float left, float top, Paint paint) 画 Bitmap
 > 根据path画
+#### 10. drawBitmap(Bitmap bitmap, float left, float top, Paint paint) 画 Bitmap
+> left,top是图片左上角坐标
 #### 11. canvas.save();
 > 保存画布位置
 #### 12. canvas.restore();
