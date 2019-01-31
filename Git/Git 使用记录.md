@@ -88,3 +88,9 @@ git init
 
 git remote add origin <你的远程地址>
 
+
+# 删除git远程提上去的垃圾文件夹
+git pull origin master
+git rm -r --cached <你文件夹名字路径>
+git commit -m""
+git push origin master
