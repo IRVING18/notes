@@ -1,4 +1,6 @@
 # FlipBoard 翻页动画效果
+
+![linear](https://github.com/IRVING18/notes/blob/master/android/file/filpview.gif)
 ## 一、动画分析
 > 方法：可以解开动图然后观察
 
