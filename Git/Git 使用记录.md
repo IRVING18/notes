@@ -81,3 +81,10 @@ git reset --hard commit 号
 ## 2、查看远程仓库地址
 
 git remote -v
+
+## 3、初次设置远程仓库
+
+git init
+
+git remote add origin <你的远程地址>
+
