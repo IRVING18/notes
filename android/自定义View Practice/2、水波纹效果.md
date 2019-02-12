@@ -1,5 +1,5 @@
 # 水波纹效果
-![linear](https://thumbnail0.baidupcs.com/thumbnail/701cac2ef01428b8747d82d0f8cb8213?fid=1313615635-250528-819341963372592&time=1548918000&rt=sh&sign=FDTAER-DCb740ccc5511e5e8fedcff06b081203-en8wjKJ4MNcEXWT9LdCo5vJtPaY%3D&expires=8h&chkv=0&chkbd=0&chkpc=&dp-logid=710939205077419547&dp-callid=0&size=c710_u400&quality=100&vuk=-&ft=video)
+![linear](https://picabstract-preview-ftn.weiyun.com/ftn_pic_abs_v3/cc46587bcbff42dea0025d4f474de4509bf2cbfa1ffba4fdb6f1bc62797d16b6c117c95d878ec57bc21589e438fb97d4?pictype=scale&amp;from=30113&amp;version=3.3.3.3&amp;uin=1141502381&amp;fname=QQ20190130-164311-HD.gif&amp;size=750)
 ## 一、动画分析
 -  画圈圈，越往外画的圈颜色越淡
 ## 二、实现思路
