@@ -6,6 +6,7 @@
 |compile|api|和compile功能一模一样|
 |provided|compileOnly|对所有的build type以及favlors只在编译时使用，类似eclipse中的external-libs,只参与编译，不打包到最终apk|
 |apk|runtimeOnly|只会打包到apk文件中，而不参与编译|
+|apt|annotationProcessor|注解处理器依赖项配置，目前看来没有依赖传递，必须要在所有build.gradle中加入配置|
 
 > 3.竖线来一条？
 
