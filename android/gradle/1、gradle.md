@@ -73,5 +73,5 @@
 3. src/detest/（产品风味源集） 
 4. src/main/（主源集）
 
-[!linear](https://github.com/IRVING18/notes/blob/master/android/file/flavor.png)
+![linear](https://github.com/IRVING18/notes/blob/master/android/file/flavor.png)
 
