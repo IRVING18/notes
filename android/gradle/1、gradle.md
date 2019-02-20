@@ -31,10 +31,29 @@
   }
 ```
 
-# 三、构建变体规则
+# 三、task 关键字
+### 1、继承关系
+```java
+  //clean继承的是 Delete ，类似class clean exends Delete{}
+  task clean(type: Delete) {
+      doLast{}
+      doFirst{}
+  }
+```
+### 2、执行命令
+ ```java
+   //进入Terminal命令行
+   ./gradlew clean 
+ ```
+### 3、执行顺序
+> task执行时是有一个执行数组。
+  - 1.doFirst 将代码放在数组的0角标位置。
+  - 2.doLast 将代码放在数组的末尾位置。
+
+# 四、构建变体规则
 > 可以自定识别debug、release等不同的代码块
 
-#### 1、设置buildType
+### 1、设置buildType
 
 ```java
   buildTypes {
@@ -65,7 +84,7 @@
   }
 ```
 
-#### 2、建立debug，detest文件夹可以设置不同环境的代码实现
+### 2、建立debug，detest文件夹可以设置不同环境的代码实现
 
 例如: 
 1. src/chinaDebug/（构建变体源集） 
