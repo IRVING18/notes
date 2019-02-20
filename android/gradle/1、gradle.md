@@ -9,4 +9,24 @@
 |apt|annotationProcessor|注解处理器依赖项配置，目前看来没有依赖传递，必须要在所有build.gradle中加入配置|
 
 # flavorDimensions 风味维度
+> 可以定义多个flavorDimensions 维度
 
+```java
+  flavorDimensions 'price','nation'
+  productFlavors {
+      //价格维度
+      free {
+          dimension 'price'
+      }
+      paid {
+          dimension 'price'
+      }
+      //国际维度
+      china {
+          dimension 'nation'
+      }
+      global {
+          dimension 'nation'
+      }
+  }
+```
