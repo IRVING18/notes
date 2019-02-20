@@ -34,16 +34,22 @@
 # 三、task 关键字
 ### 1、继承关系
 ```java
-  //clean继承的是 Delete ，类似class clean exends Delete{}
+//clean继承的是 Delete ，类似class clean exends Delete{}
   task clean(type: Delete) {
+      println "1111"
       doLast{}
       doFirst{}
+      println "2222"
   }
 ```
 ### 2、执行命令
+> 进入Terminal命令行
  ```java
-   //进入Terminal命令行
+//直接调用clean task
    ./gradlew clean 
+   
+//运行gradle，但是task的doLast，doFirst代码不执行，而是加入执行队列。但是打印1111和2222会执行
+   ./gradlew
  ```
 ### 3、执行顺序
 > task执行时是有一个执行数组。
