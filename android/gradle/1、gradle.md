@@ -1,4 +1,4 @@
-# gradle 3.0 升级变化
+# 一、gradle 3.0 升级变化
 
 |已弃用配置|新配置|行为|
 |:------:  |:------:|:-|
@@ -8,7 +8,7 @@
 |apk|runtimeOnly|只会打包到apk文件中，而不参与编译|
 |apt|annotationProcessor|注解处理器依赖项配置，目前看来没有依赖传递，必须要在所有build.gradle中加入配置|
 
-# flavorDimensions 风味维度
+# 二、flavorDimensions 风味维度
 > 可以定义多个flavorDimensions 维度
 
 ```java
@@ -30,3 +30,48 @@
       }
   }
 ```
+
+# 三、构建变体规则
+> 可以自定识别debug、release等不同的代码块
+
+#### 1、设置buildType
+
+```java
+  buildTypes {
+      //调试模式
+      debug {
+          minifyEnabled false
+          //是否zip对齐
+          zipAlignEnabled true
+          //移除无用的资源文件
+          shrinkResources false
+      }
+      //测试模块
+      detest {
+          initWith debug
+      }
+      //预发环境
+      beta {
+          initWith debug
+      }
+      //正式环境
+      release {
+          minifyEnabled false
+          //是否zip对齐
+          zipAlignEnabled true
+          //移除无用的资源文件
+          shrinkResources false
+      }
+  }
+```
+
+#### 2、建立debug，detest文件夹可以设置不同环境的代码实现
+
+例如: 
+1. src/chinaDebug/（构建变体源集） 
+2. src/debug/（构建类型源集） 
+3. src/detest/（产品风味源集） 
+4. src/main/（主源集）
+
+
+
