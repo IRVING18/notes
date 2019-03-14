@@ -1,5 +1,6 @@
-1、PathMeasure
-测量path
+# 1、PathMeasure
+> 测量path的长度。   
+> 使用场景画表盘，可以可以使用pathMearsure.getLength()来获取弧形的长度，然后再等分画刻度。
 # Xformode 使用
 > 用于合成图片，两张图片交汇怎么处理的。
 
@@ -10,7 +11,7 @@
 ### 实例1
 > 效果图
 
-![linear]()
+![linear](https://github.com/IRVING18/notes/blob/master/android/file/circle.png)
 
 #### 实现思路
 - 1、先画一个大圆设置成绿色。
