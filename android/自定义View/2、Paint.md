@@ -63,6 +63,9 @@
 - getTextPath(String text, int start, int end, float x, float y, Path path) / getTextPath(char[] text, int index, int count, float x, float y, Path path)
 
 # 三、drawText()相关
+## 0.paint.breakText();
+> 可以用来实现图文混合时，什么时候换行等。   
+详情见demo：[breakText]()
 ## 1.paint.setTextSize(60); 
 > 设置文字大小
 ## 2.绘制自动换行文字
