@@ -1,14 +1,19 @@
 # FlipBoard 翻页动画效果
 
-![linear](https://github.com/rengwuxian/MaterialEditText/blob/master/images/floating_label.png)
+![linear](https://github.com/IRVING18/notes/blob/master/android/file/filpview.gif)
 ## 一、动画分析
-- 1. 文字一个简单的渐变alpha 0->1。
-- 2. y轴坐标的移动。
-- 3. 唯一的关键就是设置padding，来让顶部腾出位置来绘制文字。
-## 二、实现思路
+> 方法：可以解开动图然后观察
 
-#### 设置一个fraction值，用来同时控制alpha和y轴坐标的渐变。
-1. alpha
+- 1. 第一步肯定是抬起右边。
+- 2. 让这个状态围着Z轴旋转。但是还不能让图旋转
+- 3. 旋转270度之后，抬起上部分。
+## 二、实现思路
+> 注意：camera是需要矫正的。
+#### 一半是翻起的状态
+1. 用camera实现抬起右边，围着Y轴转-45度，就可以抬起
+2. 最重要的一步，画抬起的一半，首先思路是这样的，就像移动坐标原点一样，这个抬起的状态旋转但是图片不旋转的效果也可以这么实现。
+2.1 先让canvas围着Z轴，也就是平面旋转，然后旋转的时候把camera投影到canvas，然后顺便剪裁右边。因为旋转的是坐标轴，所以只剪裁右边就ok。
+2.2 这时候不做操作那就是这个图转了，但是神奇的地方来了。这时候可以让canvas围着Z轴旋转回来。然后图片就没有旋转，但是抬起状态却保留下来了。
 #### 另一半是不动的
 3. 第三步画不动的一半。思路和第二步类似了。
 
