@@ -11,11 +11,12 @@ onSizeChanged();
 ```
 ## 二、GestureDetectorCompat 触摸手势识别
 ### 1、普通手势监听 GestureDetector.OnGestureListener
-- 1.1 onDown() 所有方法是否能收到回调的根本。返回true能收到，false收不到
+- 1.1 onDown() 所有方法是否能收到回调的**根本**。返回true能收到，false收不到
 - 1.2 onShowPress(MotionEvent e) 预按下事件，按下100ms回调。
-- 1.3 onSingleTapUp(MotionEvent e) 按下抬起就触发，单击。但是同时监听双击事件的话，那么单击功能就要用onSingleTapConfirmed()方法了。
-- 1.4 onScroll(MotionEvent down, MotionEvent event, float distanceX, float distanceY) 滑动回调，注意distanceX和Y是初始点-终点
+- 1.3 onSingleTapUp(MotionEvent e) 按下抬起就触发，单击。但是同时监听双击事件的话，那么单击功能就要用**onSingleTapConfirmed()** 方法了。
+- 1.4 onScroll(MotionEvent down, MotionEvent event, float distanceX, float distanceY) 滑动回调，**注意distanceX和Y是 初始点 - 终点**
 - 1.5 onLongPress(MotionEvent e)长按回调，按下500ms就会回调
+- 1.6 onFling(MotionEvent down, MotionEvent event, float velocityX, float velocityY)惯性滑动监听，**通常配合OverScroller使用** 。
 ```java
     /**
      * 手势监听回调
@@ -84,3 +85,5 @@ onSizeChanged();
         }
     };
 ```
+
+### 2、GestureDetector.OnDoubleTapListener 双击监听
