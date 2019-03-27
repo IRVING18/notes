@@ -43,3 +43,5 @@ onSizeChanged();
         setMeasuredDimension(measuredWidth, measuredHeight);
     }
 ```
+### 2、流式布局
+[点这看](https://github.com/IRVING18/FlowLayout)
