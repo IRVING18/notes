@@ -154,11 +154,16 @@ onSizeChanged();
 ```
 
 ## 三、OverScroller 配合惯性滑动，相当于一个惯性模型计算器。
-### 使用方法
+#### 使用方法
 - 1、配合GestureDetector.OnGestureListener的onFling()方法。   
 - 2、在onFling中给OverScroller需要计算的值。
 - 3、在需要使用具体值得时候，调用mOverScroller.computeScrollOffset()方法计算一下，然后mOverScroller.getCurrX()获取值。这个过程类似ParentView调用childView的onMeasure()方法。调用完，再取值。
 - 4、computeScrollOffset()方法返回值是boolean行，代表是否还有惯性。
+
+#### 方法说明
+- 1、OverScroller.fling() 设置需要计算的值
+- 2、OverScroller.computeScrollOffset() 发起计算
+- 3、OverScroller.getCurrX()等，获取计算后的值
 ```java
 /**
          * 惯性滑动
