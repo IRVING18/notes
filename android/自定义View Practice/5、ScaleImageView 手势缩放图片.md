@@ -11,6 +11,20 @@ onSizeChanged();
 ```
 ## 二、GestureDetectorCompat 触摸手势识别
 ### 1、普通手势监听 GestureDetector.OnGestureListener
+#### 使用方法
+> 配合View使用，onTouchEvent()方法中调用
+```java
+    mDetectorCompat = new GestureDetectorCompat(getContext(), mGestureListener);
+    /**
+     * 重写触摸监听，并把事件传递给GestureDetectorCompat处理
+     */
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        //把事件交给GestureDetectorCompat，他的onDown事件要返回true，才能真正监听到。
+        return mDetectorCompat.onTouchEvent(event);
+    }
+```
+#### 方法说明
 - 1.1 onDown() 所有方法是否能收到回调的**根本**。返回true能收到，false收不到
 - 1.2 onShowPress(MotionEvent e) 预按下事件，按下100ms回调。
 - 1.3 onSingleTapUp(MotionEvent e) 按下抬起就触发，单击。但是同时监听双击事件的话，那么单击功能就要用**onSingleTapConfirmed()** 方法了。
@@ -87,3 +101,56 @@ onSizeChanged();
 ```
 
 ### 2、GestureDetector.OnDoubleTapListener 双击监听
+#### 使用方法
+```java
+   //设置双击监听
+   mDetectorCompat.setOnDoubleTapListener(mOnDoubleTapListener);
+```
+#### 方法说明
+- 2.1 onSingleTapConfirmed(MotionEvent e) 因为添加了双击监听后，onSingleTapUp()方法在双击单击时都会触发，所以此时用这个方法来**处理单击逻辑。** 
+- 2.2 onDoubleTap(MotionEvent e)双击回调，两次点击300ms内。但是连续点击4次，会触发两次。两次点击小于40ms ，会被认为手抖，不会触发
+- 2.3 onDoubleTapEvent(MotionEvent e)双击同样被调用，区别就是双击后不抬起的话，之后的触摸事件move等等仍然回调给这个方法，直到up事件。
+
+```java
+    /**
+     * 双击回调监听
+     */
+    GestureDetector.OnDoubleTapListener mOnDoubleTapListener = new GestureDetector.OnDoubleTapListener() {
+        /**
+         * 1、设置双击之后，这个方法是用来替代onSingleTapUp()的。
+         * 因为设置双击之后，onSingleTapUp()，双击单机都会回调。
+         * 2、这时用此方法来处理单机事件。
+         * @param e
+         * @return 没用
+         */
+        @Override
+        public boolean onSingleTapConfirmed(MotionEvent e) {
+            return false;
+        }
+
+        /**
+         * 1、双击，两次点击不超过300ms，
+         * 但是连续点击4次，会触发两次。
+         * 2、两次点击小于40ms ，会被认为手抖，不会触发
+         * @param e
+         * @return 没用
+         */
+        @Override
+        public boolean onDoubleTap(MotionEvent e) {
+            return false;
+        }
+
+        /**
+         * 早期谷歌地图，双击不抬起滑动，设置3维变化
+         * 1、也就是双击同样被调用，区别就是双击后不抬起的话，之后的触摸事件move等等仍然回调给这个方法，直到up事件。
+         * @param e
+         * @return 没用
+         */
+        @Override
+        public boolean onDoubleTapEvent(MotionEvent e) {
+            return false;
+        }
+    };
+```
+
+
