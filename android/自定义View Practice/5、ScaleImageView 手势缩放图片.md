@@ -153,4 +153,61 @@ onSizeChanged();
     };
 ```
 
+## 三、OverScroller 配合惯性滑动，相当于一个惯性模型计算器。
+### 使用方法
+- 1、配合GestureDetector.OnGestureListener的onFling()方法。   
+- 2、在onFling中给OverScroller需要计算的值。
+- 3、在需要使用具体值得时候，调用mOverScroller.computeScrollOffset()方法计算一下，然后mOverScroller.getCurrX()获取值。这个过程类似ParentView调用childView的onMeasure()方法。调用完，再取值。
+- 4、computeScrollOffset()方法返回值是boolean行，代表是否还有惯性。
+```java
+/**
+         * 惯性滑动
+         * @param velocityX 惯性越大，值越大
+         * @return 返回值没有
+         */
+        @Override
+        public boolean onFling(MotionEvent down, MotionEvent event, float velocityX, float velocityY) {
+                //这个就相当于惯性计算器，在这给OverScroller需要计算的值
+                mOverScroller.fling(
+                        //起始点
+                        (int) transOffsetX, (int) transOffsetY,
+                        //惯性
+                        (int) velocityX, (int) velocityY,
+                        //最大值和最小值
+                        -(int) (bitmap.getWidth() * bigScale - getWidth()) / 2,
+                        (int) (bitmap.getWidth() * bigScale - getWidth()) / 2,
+                        -(int) (bitmap.getHeight() * bigScale - (float) getHeight()) / 2,
+                        (int) (bitmap.getHeight() * bigScale - (float) getHeight()) / 2,
+                        //过度拉伸
+                        100,
+                        100
+                );
+
+            return false;
+        }
+        
+     /**
+     * 惯性滑动，实现手动动画
+     */
+    Runnable mFlingRunnable = new Runnable() {
+        @Override
+        public void run() {
+            //调用这个方法，启动计算。类似ParentView调用childView的onMeasure()方法。调用完，再取值。
+            //computeScrollOffset返回值是boolean，是否还有惯性
+            if (mOverScroller.computeScrollOffset()) {
+                transOffsetX = mOverScroller.getCurrX();
+                transOffsetY = mOverScroller.getCurrY();
+                invalidate();
+                //默认是每一帧执行一次，
+                //1、和post(action)区别：post()立即去主线程执行，postOnAnimation()：等到下一帧再去主线程执行
+                //2、兼容api16以下 : ViewCompat.postOnAnimation();
+                //ViewCompat.postOnAnimation(ScaleImageView.this,mFlingRunnable);
+                postOnAnimation(mFlingRunnable);
+
+            }
+        }
+    };
+
+```
+
 
