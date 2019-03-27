@@ -13,3 +13,6 @@ layout();
 onlayout();
 onSizeChanged();
 ```
+
+## 三、实例说明
+### 1、正方形的ImageView
