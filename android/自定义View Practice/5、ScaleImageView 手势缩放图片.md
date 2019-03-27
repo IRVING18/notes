@@ -142,3 +142,6 @@
 
 ```
 ## 3、实现惯性滑动
+#### 3.1 监听触摸事件 GestureDetectorCompat 的 **OnGestureListener** 的 **onFling()** 方法可以监听手势惯性。
+#### 3.2 通过 **OverScroller** 惯性计算模型，可以帮助计算惯性值。
+```
