@@ -16,3 +16,30 @@ onSizeChanged();
 
 ## 三、实例说明
 ### 1、正方形的ImageView
+![linear](https://github.com/IRVING18/notes/blob/master/android/file/layoutdemo1.gif)
+
+#### 理解测量顺序：    
+> 1、ImageView的onMeasure()方法，设置宽高相等，setMeasureDimensions()。    
+> 2、set完之后，父view就能拿到ImageView的宽高，然后会给子view相应的尺寸。
+
+- 1.1 LinearLayout 在onMeasure()方法会调用ImageView的measure()方法，
+- 1.2 ImageView的measure()方法会调用onMeasure()，onMeasure(),setMeasureDimensions()设置宽高。
+- 1.3 然后LinearLayout通过child.getMeasureWidth()/Height(),来获取ImageView的宽高，然后它会保存下来，然后在onLayout()中去给IamgeView布局。
+
+[详细代码](https://github.com/hencoder/PracticeLayout1)
+#### 关键代码
+```java
+ @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+
+        int measuredWidth = getMeasuredWidth();
+        int measuredHeight = getMeasuredHeight();
+        if (measuredWidth > measuredHeight) {
+            measuredWidth = measuredHeight;
+        } else {
+            measuredHeight = measuredWidth;
+        }
+        setMeasuredDimension(measuredWidth, measuredHeight);
+    }
+```
