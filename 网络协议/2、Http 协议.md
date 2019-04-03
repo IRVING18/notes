@@ -50,7 +50,7 @@ HTTP响应也由四个部分组成，分别是：**状态行、消息报头、�
     Hello World! My payload includes a trailing CRLF.
 ```
 
-## 七、HTTP请求方法
+## 七、HTTP请求方法 Method
 根据HTTP标准，HTTP请求可以使用多种请求方法。  
 HTTP1.0定义了三种请求方法： GET, POST 和 HEAD方法。  
 HTTP1.1新增了五种请求方法：OPTIONS, PUT, DELETE, TRACE 和 CONNECT 方法。   
@@ -71,7 +71,7 @@ HTTP1.1新增了五种请求方法：OPTIONS, PUT, DELETE, TRACE 和 CONNECT 方
 |7|OPTIONS|允许客户端查看服务器的性能。|
 |8|TRACE|回显服务器收到的请求，主要用于测试或诊断。|
 
-## 八、HTTP 响应头信息
+## 八、HTTP 响应头信息 HEADER
 HTTP请求头提供了关于请求，响应或者其他的发送实体的信息。  
 在本章节中我们将具体来介绍HTTP响应头信息。  
 
@@ -156,3 +156,6 @@ HTTP状态码列表:
 |503|Service Unavailable|由于超载或系统维护，服务器暂时的无法处理客户端的请求。延时的长度可包含在服务器的Retry-After头信息中|
 |504|Gateway Time-out|充当网关或代理的服务器，未及时从远端服务器获取请求|
 |505|HTTP Version not supported|服务器不支持请求的HTTP协议的版本，无法完成处理|
+
+
+
