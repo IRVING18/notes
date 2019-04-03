@@ -76,15 +76,11 @@ HTTP1.1新增了五种请求方法：OPTIONS, PUT, DELETE, TRACE 和 CONNECT 方
 HTTP请求头提供了关于请求，响应或者其他的发送实体的信息。  
 在本章节中我们将具体来介绍HTTP响应头信息。  
 
-- 1.Content-Length 内容长度
-    Content-Length :在传递二进制信息时没有正常可以用来分割的字符，所以这个参数很必要了。用来告诉信息有多长。
-- 2.Content-Type  内容类型
-    MIME类型，传递数据的类型。   
-    text/html(文本)   
-    application/x-www-form-urlencoded（普通表单）   
-    multipart/form-data（可传递带二进制的数据）   
-    application/json(json格式传递)   
-    image/jpeg、application/zip (单文件)   
+### Cache和Buffer区别
+- 1.Cache 缓存
+  用过的东西先存下来。如：页面数据缓存。
+- 2.Buffer 缓冲
+  将要用的东西提前存下来。如：视频播放，在网络好的时候提前缓冲一点下来。
  
 |等级|应答头|说明|
 |:-  |:-    |:------|
