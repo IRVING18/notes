@@ -89,12 +89,8 @@ HTTP请求头提供了关于请求，响应或者其他的发送实体的信息�
 |应答头|说明|
 |:-    |:------|
 |Content-Length|表示内容长度。在传递二进制信息时没有正常可以用来分割的字符，所以这个参数很必要了。用来告诉信息有多长。|
-|Content-Type|表示内容类型。表示后面的文档属于什么MIME类型。Servlet默认为text/plain，但通常需要显式地指定为text/html。由于经常要设置Content-Type，因此HttpServletResponse提供了一个专用的方法setContentType。MIME类型，传递数据的类型。   
-    text/html(文本)   
-    application/x-www-form-urlencoded（普通表单）   
-    multipart/form-data（可传递带二进制的数据）   
-    application/json(json格式传递)   
-    image/jpeg、application/zip (单文件)   |
+|Content-Type|表示内容类型。表示后面的文档属于什么MIME类型。Servlet默认为text/plain，但通常需要显式地指定为text/html。由于经常要设置Content-Type，因此HttpServletResponse提供了一个专用的方法setContentType。MIME类型，传递数据的类型。 1、text/html(文本) 2、application/x-www-form-urlencoded（普通表单）   3、multipart/form-data（可传递带二进制的数据）4、application/json(json格式传递)   
+ 5、image/jpeg、application/zip (单文件)   |
 |Allow|服务器支持哪些请求方法（如GET、POST等）。|
 |Content-Encoding|文档的编码（Encode）方法。只有在解码之后才可以得到Content-Type头指定的内容类型。利用gzip压缩文档能够显著地减少HTML文档的下载时间。Java的GZIPOutputStream可以很方便地进行gzip压缩，但只有Unix上的Netscape和Windows上的IE 4、IE 5才支持它。因此，Servlet应该通过查看Accept-Encoding头（即request.getHeader("Accept-Encoding")）检查浏览器是否支持gzip，为支持gzip的浏览器返回经gzip压缩的HTML页面，为其他浏览器返回普通页面。|
 |Date|当前的GMT时间。你可以用setDateHeader来设置这个头以避免转换时间格式的麻烦。|
