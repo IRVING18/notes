@@ -50,7 +50,8 @@ HTTP响应也由四个部分组成，分别是：**状态行、消息报头、�
     Hello World! My payload includes a trailing CRLF.
 ```
 
-## 七、HTTP请求方法 Method
+# HTTP 请求组成说明
+## 一、HTTP请求方法 Method
 根据HTTP标准，HTTP请求可以使用多种请求方法。  
 HTTP1.0定义了三种请求方法： GET, POST 和 HEAD方法。  
 HTTP1.1新增了五种请求方法：OPTIONS, PUT, DELETE, TRACE 和 CONNECT 方法。   
@@ -71,7 +72,7 @@ HTTP1.1新增了五种请求方法：OPTIONS, PUT, DELETE, TRACE 和 CONNECT 方
 |7|OPTIONS|允许客户端查看服务器的性能。|
 |8|TRACE|回显服务器收到的请求，主要用于测试或诊断。|
 
-## 八、HTTP 响应头信息 HEADER
+## 二、HTTP 响应头信息 HEADER
 HTTP请求头提供了关于请求，响应或者其他的发送实体的信息。  
 在本章节中我们将具体来介绍HTTP响应头信息。  
 
@@ -90,7 +91,7 @@ HTTP请求头提供了关于请求，响应或者其他的发送实体的信息�
 |Set-Cookie|设置和页面关联的Cookie。Servlet不应使用response.setHeader("Set-Cookie", ...)，而是应使用HttpServletResponse提供的专用方法addCookie。参见下文有关Cookie设置的讨论。|
 |WWW-Authenticate|客户应该在Authorization头中提供什么类型的授权信息？在包含401（Unauthorized）状态行的应答中这个头是必需的。例如，response.setHeader("WWW-Authenticate", "BASIC realm=＼"executives＼"")。注意Servlet一般不进行这方面的处理，而是让Web服务器的专门机制来控制受密码保护页面的访问（例如.htaccess）。|
 
-## 九、HTTP 状态码
+## 三、HTTP 状态码
 
 当浏览者访问一个网页时，浏览者的浏览器会向网页所在服务器发出请求。当浏览器接收并显示网页前，此网页所在的服务器会返回一个包含HTTP状态码的信息头（server header）用以响应浏览器的请求。  
 HTTP状态码的英文为HTTP Status Code。  
@@ -99,7 +100,7 @@ HTTP状态码的英文为HTTP Status Code。
 - 301 - 资源（网页等）被永久转移到其它URL
 - 404 - 请求的资源（网页等）不存在
 - 500 - 内部服务器错误
-## 十、HTTP 状态码分类
+## 四、HTTP 状态码分类
 HTTP状态码由三个十进制数字组成，第一个十进制数字定义了状态码的类型，后两个数字没有分类的作用。HTTP状态码共分为5种类型：  
 
 |分类|分类描述|
