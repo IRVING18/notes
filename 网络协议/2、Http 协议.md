@@ -76,6 +76,11 @@ HTTP1.1新增了五种请求方法：OPTIONS, PUT, DELETE, TRACE 和 CONNECT 方
 HTTP请求头提供了关于请求，响应或者其他的发送实体的信息。  
 在本章节中我们将具体来介绍HTTP响应头信息。  
 
+- 1.Content-Length
+    Content-Length :在传递二进制信息时没有正常可以用来分割的字符，所以这个参数很必要了。用来告诉信息有多长。
+- 2.Content-Type
+    MIME类型，传递数据的类型。text/html(文本)、application/x-www-form-urlencoded（普通表单）、multipart/form-data（可传递带二进制的数据）
+
 |应答头|说明|
 |:-    |:------|
 |Allow|服务器支持哪些请求方法（如GET、POST等）。|
