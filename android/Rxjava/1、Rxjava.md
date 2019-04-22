@@ -16,7 +16,7 @@ Single.just(1)
                 })
                 .subscribe(new SingleObserver<String>() {
                     @Override
-                    public void onSubscribe(Disposable d) {
+                    public void onSubscribe(Disposable d){
 
                     }
 
@@ -33,4 +33,6 @@ Single.just(1)
 ```
 - 2、
 
-## 
+## 二、线程切换
+- subscribeOn() :设置上游处理在哪个线程，也就just、interval的线程。
+- observeOn();设置下游在哪个线程。
