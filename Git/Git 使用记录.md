@@ -94,3 +94,6 @@ git pull origin master
 git rm -r --cached <你文件夹名字路径>   
 git commit -m""    
 git push origin master    
+
+
+
