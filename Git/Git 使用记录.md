@@ -96,4 +96,15 @@ git commit -m""
 git push origin master    
 
 
+# 撤销commit 操作
+> 撤销commit，回到add的状态。^1上一次commit ^2前两次commit都回退
 
+```java
+git reset --solf HEAD^1
+```
+
+# 撤销add 操作
+
+```java
+git reset
+```
