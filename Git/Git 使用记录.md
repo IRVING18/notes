@@ -131,3 +131,8 @@ HEAD^的意思是上一个版本，也可以写成HEAD~1
 ```java
 git reset
 ```
+
+# 将某个文件恢复到某个commit号
+```java
+git reset sa6789fas src/add/controller.java
+```
