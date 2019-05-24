@@ -27,6 +27,10 @@
 ## 创建分支
 - git checkout -b 分支名
 
+## 删除分支
+- git branch -d 分支名  //删除本地分支
+- git push origin --delete 分支名   //删除远程分支
+
 ## 关联远程仓库
 - git init
 - git config --global user.name "git用户名"
@@ -53,6 +57,10 @@
 
 - git tag -d v1.2.2 //删除本地tag
 - git push origin :refs/tags/v1.2.2 //删除远程tag
+
+## 回到某个tag
+- git checkout tag1 //回到那次tag
+- git checkout -b tag1 //如果需要可以直接创建新的分支，代码就是这个tag
 
 ## 回滚、撤销回滚
 > 前提是commit都已经push过  
