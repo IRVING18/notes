@@ -78,6 +78,8 @@ git reflog -> 找到commit号
 git reset --hard commit 号   
 
 
+
+
 # 更换远程地址
 ## 1、切换远程仓库地址
 - 方式一：修改远程仓库地址  
