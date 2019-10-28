@@ -1,0 +1,2 @@
+
+{"tabs": [{"fragment_type": "f_home","icon_select": "","icon_unselect": "","title": "首页","web_link": ""}, {"fragment_type": "f_cate","icon_select": "","icon_unselect": "","title": "分类","web_link": ""}, {"fragment_type": "f_mine","icon_select": "","icon_unselect": "","title": "我的","web_link": ""}]}
