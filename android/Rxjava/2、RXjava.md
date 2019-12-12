@@ -40,3 +40,9 @@
     Observable observable3=Observable.never();
     // 即观察者接收后什么都不调用
 ```
+
+> 2、变换操作符
+- Map()
+- FlatMap()
+- ConcatMap()
+- Buffer()
