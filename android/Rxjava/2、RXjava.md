@@ -46,3 +46,9 @@
 - FlatMap()
 - ConcatMap()
 - Buffer()
+
+
+> 3、数据操作符
+- merge() 和时间顺序相关，Observable1 和 Observable2 发送的事件按时间顺序组合
+- concat()  根据observable 1、2： 顺序合并，和时间无关，Observable1 在前，Observable2 在后。
+- zip()
