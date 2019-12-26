@@ -27,6 +27,13 @@
 ## 创建分支
 - git checkout -b 分支名
 
+## 切换到远程分支
+- git checkout -t origin/feature/develop
+
+## 删除分支
+- git branch -d 分支名  //删除本地分支
+- git push origin --delete 分支名   //删除远程分支
+
 ## 关联远程仓库
 - git init
 - git config --global user.name "git用户名"
@@ -54,6 +61,10 @@
 - git tag -d v1.2.2 //删除本地tag
 - git push origin :refs/tags/v1.2.2 //删除远程tag
 
+## 回到某个tag
+- git checkout tag1 //回到那次tag
+- git checkout -b tag1 //如果需要可以直接创建新的分支，代码就是这个tag
+
 ## 回滚、撤销回滚
 > 前提是commit都已经push过  
 
@@ -65,6 +76,8 @@ git reset --hard commit号
 撤销回滚   
 git reflog -> 找到commit号  
 git reset --hard commit 号   
+
+
 
 
 # 更换远程地址
@@ -94,3 +107,50 @@ git pull origin master
 git rm -r --cached <你文件夹名字路径>   
 git commit -m""    
 git push origin master    
+
+
+# 撤销commit 操作
+> 撤销commit，回到add的状态。^1上一次commit ^2前两次commit都回退
+
+```java
+git reset --solf HEAD^1
+```
+说一下个人理解：
+
+HEAD^的意思是上一个版本，也可以写成HEAD~1
+
+如果你进行了2次commit，想都撤回，可以使用HEAD~2
+
+至于这几个参数：
+
+--mixed 
+
+意思是：不删除工作空间改动代码，撤销commit，并且撤销git add . 操作
+这个为默认参数,git reset --mixed HEAD^ 和 git reset HEAD^ 效果是一样的。
+ 
+
+--soft  
+
+不删除工作空间改动代码，撤销commit，不撤销git add . 
+ 
+--hard
+
+删除工作空间改动代码，撤销commit，撤销git add . 
+
+注意完成这个操作后，就恢复到了上一次的commit状态。
+
+# 撤销add 操作
+
+```java
+git reset
+```
+
+# 将某个文件恢复到某个commit号
+```java
+git reset sa6789fas src/add/controller.java
+```
+
+# 放弃新建文件
+```java
+git clean -fd
+```   
