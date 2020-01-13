@@ -45,6 +45,11 @@
         git
         zsh-autosuggestions
     )
+    
+    设置自动补全颜色
+     vim .oh-my-zsh/custom/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+     ${ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=13'}
+     fg 的值可以切换颜色
 ```
 #### 6、安装自动高亮插件
 ```java
