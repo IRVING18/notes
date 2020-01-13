@@ -65,3 +65,10 @@
     )
     然后在文件的最后一行添加：source ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 ```
+#### 7、设置完以上内容之后，可能会发现git status 并没有高亮效果。
+```shell
+    设置下这个: 
+    git config --global color.ui true
+    
+    设置完可以看下vim ~/.gitconfig 
+```
