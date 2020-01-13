@@ -41,5 +41,22 @@
     vi ~/.zshrc
     
     加上 
+    plugins=(
+        git
+        zsh-autosuggestions
+    )
+```
+#### 6、安装自动高亮插件
+```java
+    cd ~/.oh-my-zsh/custom/plugins/
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git
     vi ~/.zshrc
+    
+    请务必保证插件顺序，zsh-syntax-highlighting必须在最后一个。
+    plugins=(
+        git
+        zsh-autosuggestions
+        zsh-syntax-highlighting
+    )
+    然后在文件的最后一行添加：source ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 ```
