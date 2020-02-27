@@ -1,0 +1,3 @@
+tar
+解压：tar zxvf FileName.tar.gz
+压缩：tar zcvf FileName.tar.gz DirName
