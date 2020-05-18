@@ -1,4 +1,4 @@
-![linear](https://gitee.com/ivring18/source/blob/master/arc3.jpg)
+
 ## 一. Canvas画布
 #### 1. canvas.drawColor();
 > 画颜色
