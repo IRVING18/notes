@@ -1,3 +1,4 @@
+
 ## 一. Canvas画布
 #### 1. canvas.drawColor();
 > 画颜色
@@ -26,6 +27,7 @@
 > useCenter 是否填充到圆心  
 例：  
 ![linear](https://github.com/IRVING18/notes/blob/master/android/file/arc.jpg)
+
 #### 9. canvas.drawPath(path,paint);
 > 根据path画
 #### 10. drawBitmap(Bitmap bitmap, float left, float top, Paint paint) 画 Bitmap
