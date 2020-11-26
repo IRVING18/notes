@@ -1,0 +1,36 @@
+# 目录
+
+- [一、类加载器分类](#jump1)
+    - [1、BootstrapClassLoader 启动类加载器](#jump1_1)
+    - [2、ExtensionClassLoader 扩展类加载器](#jump1_2)
+    - [3、ApplicationClassLoader 应用类加载器](#jump1_3)
+    - [4、CustomClassLoader 自定义类加载器](#jump1_4)
+    - [5、线程上下文类加载器](#jump1_5)
+- [二、java虚拟机入口应用：sun.misc.Launcher](#jump2)
+- [<font >三、ExtClassLoader、AppClassLoader源码分析](#jump3)
+    - [1、ExtClassLoader源码](#jump3_1)
+    - [2、AppClassLoader源码](#jump3_2)
+    - [3、小结](#jump3_3)
+- [四、双亲委派模型](#jump4)
+- [五、ClassLoader源码分析](#jump5)
+    - [1.loadClass](#jump5_1)
+    - [2.findClass](#jump5_2)
+    - [3.defineClass(byte[] b, int off, int len)](#jump5_3)
+    - [4.resolveClass (Class<?>c)](#jump5_4)
+    - [5.ClassLoader小结](#jump5_5)
+- [六、自定义类加载器](#jump6)
+    - todo 
+- [七、加载类的三种方式](#jump7_)
+    - [1.三种方式的区别：](#jump7_1)
+    - [2.两种异常(exception)](#jump7_2)
+    - [3.理解Class.forName](#jump7_3)
+    - [4.Class.forName与ClassLoader.loadClass区别]7#jump6_4)
+    
+
+
+# <span id="jump1">一、什么是类的加载（类初始化）</span>
+
+   
+   
+   
+   
