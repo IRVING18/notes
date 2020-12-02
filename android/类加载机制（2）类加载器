@@ -1,36 +1,685 @@
 # 目录
 
-- [一、类加载器分类](#jump1)
+- [一、类加载器](#jump1)
     - [1、BootstrapClassLoader 启动类加载器](#jump1_1)
     - [2、ExtensionClassLoader 扩展类加载器](#jump1_2)
     - [3、ApplicationClassLoader 应用类加载器](#jump1_3)
     - [4、CustomClassLoader 自定义类加载器](#jump1_4)
     - [5、线程上下文类加载器](#jump1_5)
 - [二、java虚拟机入口应用：sun.misc.Launcher](#jump2)
-- [<font >三、ExtClassLoader、AppClassLoader源码分析](#jump3)
-    - [1、ExtClassLoader源码](#jump3_1)
-    - [2、AppClassLoader源码](#jump3_2)
-    - [3、小结](#jump3_3)
-- [四、双亲委派模型](#jump4)
-- [五、ClassLoader源码分析](#jump5)
-    - [1.loadClass](#jump5_1)
-    - [2.findClass](#jump5_2)
-    - [3.defineClass(byte[] b, int off, int len)](#jump5_3)
-    - [4.resolveClass (Class<?>c)](#jump5_4)
-    - [5.ClassLoader小结](#jump5_5)
-- [六、自定义类加载器](#jump6)
-    - todo 
-- [七、加载类的三种方式](#jump7_)
-    - [1.三种方式的区别：](#jump7_1)
-    - [2.两种异常(exception)](#jump7_2)
-    - [3.理解Class.forName](#jump7_3)
-    - [4.Class.forName与ClassLoader.loadClass区别]7#jump6_4)
+    - [<font >1、sun.misc.Launcher 主入口](#jump2_1)
+    - [2、内部类 ExtClassLoader extends URLClassLoader源码](#jump2_2)
+    - [3、内部类 AppClassLoader  extends URLClassLoader源码](#jump2_3)
+    - [4、真实父类URLClassLoader extends ClassLoader源码](#jump2_3)
+    
+- [三、双亲委派模型](#jump4)
+    - [1、工作流程](#jump4_1) 
+    - [2、意义说明](#jump4_2)
+- [四、ClassLoader源码分析](#jump5)
+    - [1、loadClass 实现双亲委派逻辑](#jump5_1)
+    - [2、findClass 通过path找到.class加载进byte\[\]二进制数组](#jump5_2)
+    - [3、defineClass(byte\[\] b) 将二进制数组转成Class<?>字节码对象](#jump5_3)
+- [五、自定义类加载器](#jump6)
+    - [1、作用](#jump6_1)
+    - [2、实现逻辑](#jump6_2)
+    - [3、示例](#jump6_3)
+- [六、加载类的三种方式](#jump7)
+    - [1.分类：](#jump7_1)
+    - [2.三种方式的区别](#jump7_2)
     
 
 
 # <span id="jump1">一、什么是类的加载（类初始化）</span>
+类加载器的任务是，根据类的全限定名来读取类的二进制字节流，加载进JVM。并转换成对应的java.lang.Class对象实例。
+   
+ ![image](http://note.youdao.com/yws/public/resource/f09878018de80d5a0831d3bb87c63123/xmlnote/WEBRESOURCE42604022d2439a019664960515030de1/6936)
+ 
+ ### <span id="jump1_1">1、BootstrapClassLoader</span>
+ 启动类加载器主要加载的是JVM自身需要的类，这个类加载使用C++语言实现的，是虚拟机自身的一部分，负责加载存放在 JDK\jre\lib(JDK代表JDK的安装目录，下同)下，或被 -Xbootclasspath参数指定的路径中的，并且能被虚拟机识别的类库（如rt.jar，所有的java.开头的类均被 BootstrapClassLoader加载）。启动类加载器是无法被Java程序直接引用的。总结一句话：<mark>启动类加载器加载java运行过程中的核心类库JRE\lib\rt.jar, sunrsasign.jar, charsets.jar, jce.jar, jsse.jar, plugin.jar 以及存放在JRE\classes里的类，也就是JDK提供的类等常见的比如：Object、Stirng、List…</mark>
+ ### <span id="jump1_2">2、ExtensionClassLoader</span>
+ 该加载器由 sun.misc.Launcher$ExtClassLoader实现，它负责加载 JDK\jre\lib\ext目录中，或者由 java.ext.dirs系统变量指定的路径中的所有类库（如javax.开头的类），开发者可以直接使用扩展类加载器
+ 
+ ### <span id="jump1_3">3、ApplicationClassLoader</span>
+ ApplicationClassLoader，该类加载器由 sun.misc.Launcher$AppClassLoader来实现，它负责加载用户类路径（ClassPath）所指定的类，开发者可以直接使用该类加载器，如果应用程序中没有自定义过自己的类加载器，一般情况下这个就是程序中默认的类加载器。总结一句话：<mark>应用程序类加载器加载CLASSPATH变量指定路径下的类 即指你自已在项目工程中编写的类</mark>
+ ### <span id="jump1_4">4、CustomClassLoader</span>
+ 
+ ### <span id="jump1_5">5、线程上下文类加载器</span>
+ 
+ <font color=red>Thread.currentThread().getContextClassLoader()</font>获取线程上下文类加载器，线程上下文加载器其实很重要，它违背（破坏）双亲委派模型，很好地打破了双亲委派模型的局限性，尽管我们在开发中很少用到，但是框架组件开发绝对要频繁使用到线程上下文类加载器，如Tomcat等等…
+ 
+ 
+ # <span id="jump2">二、java虚拟机入口应用：sun.misc.Launcher</span>
+ ### <span id="jump2_1">
+ 1、 Launcher类就是类加载器的入口工具类，其中维护了四种加载器。
+ > 1、bootClassPath ，这个是c实现的，我们在java层面看不到    
+ > 2、extcl = ExtClassLoader 扩展类加载器，用于加载java.ext.dirs目录下的类。    
+ > 3、loader = AppClassLoader(dirs,extcl) 应用类加载器，将扩展类加载设置给AppClassLoader，当做<font color=red>**逻辑父类parent**</font>，加载用户java.class.path下的类。   
+ > 4、Thread.currentThread().setContextClassLoader(loader); 将当前类加载器设置给线程上下文类加载器
 
-   
-   
-   
-   
+<font color=red>逻辑父类</font>是我的个人理解：
+
+<mark>1、因为本身ExtClassLoader、AppClassLoader都是集成的URLClassLoader。并不没有真正意义上的继承关系。    
+2、这里设置parent，只是在URLClassLoader里存储了一个parent的对象。然后开放了一个getParent()的方法。实现了形式上的父类关系。   
+3、为什么要这样做呢？主要是为了实现双亲委派模型，让他们有了逻辑上的“父子”关系。
+
+ 
+ ```java
+import sun.misc.SharedSecrets;
+import sun.misc.URLClassPath;
+
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
+import java.security.PrivilegedExceptionAction;
+import java.util.StringTokenizer;
+import java.util.Vector;
+
+public class Launcher {
+    private static Launcher launcher      = new Launcher();
+    //这个就是BootstrapClassLoader的位置
+    private static String   bootClassPath =
+            System.getProperty("sun.boot.class.path");
+
+    public static Launcher getLauncher() {
+        return launcher;
+    }
+
+    //应用层类加载器
+    private ClassLoader loader;
+
+    public Launcher() {
+        // Create the extension class loader
+        //扩展类加载器
+        ClassLoader extcl;
+        try {
+            //初始化内部类扩展类加载器对象。
+            extcl = ExtClassLoader.getExtClassLoader();
+        } catch (IOException e) {
+            throw new InternalError(
+                    "Could not create extension class loader", e);
+        }
+
+        // Now create the class loader to use to launch the application
+        //通过内部类，获取应用层类加载器对象
+        try {
+            loader = AppClassLoader.getAppClassLoader(extcl);
+        } catch (IOException e) {
+            throw new InternalError(
+                    "Could not create application class loader", e);
+        }
+
+        //设置AppClassLoader为线程上下文类加载器，这里注意设置给线程的是应用层加载器loader。
+        //等Thread.currentThread().getContextClassLoader()时获取的就是应用层加载器对象
+        Thread.currentThread().setContextClassLoader(loader);
+    }
+
+    /*
+     * Returns the class loader used to launch the main application.
+     */
+    public ClassLoader getClassLoader() {
+        return loader;
+    }
+
+    /*
+     * The class loader used for loading installed extensions.
+     * 扩展类加载器:
+     * 负责加载存放在JRE的lib/ext/目录下的jar包中的Class。
+     *
+     * 当然我们可以指定-D java.ext.dirs参数来添加和改变ExtClassLoader的加载路径
+     */
+    static class ExtClassLoader extends URLClassLoader {
+        static {
+            ClassLoader.registerAsParallelCapable();
+        }
+
+        /**
+         * create an ExtClassLoader. The ExtClassLoader is created
+         * within a context that limits which files it can read
+         */
+        public static ExtClassLoader getExtClassLoader() throws IOException {
+            //获取java.ext.dirs路径下所有文件
+            final File[] dirs = getExtDirs();
+
+            try {
+                // Prior implementations of this doPrivileged() block supplied
+                // aa synthesized ACC via a call to the private method
+                // ExtClassLoader.getContext().
+
+                //这里具体ACC（AccessController）的原理不再细看了，只看结果就好。
+                //1、这里的意思就是run方法里或返回一个 ExtClassLoader对象，但是默认走父类URLClassLoader的构造方法。
+                //  将dirs目录设置给URLClassLoader()。
+                //2、这个意思其实就是相当于ExtClassLoader没有做特殊的处理，仅仅就是用父类的URLClassLoader得方法。
+                //  而ExtClassLoader只是初始化了一下东西。和AppClassLoader很相似
+                return AccessController.doPrivileged(
+                        new PrivilegedExceptionAction<ExtClassLoader>() {
+                            public ExtClassLoader run() throws IOException {
+                                int len = dirs.length;
+                                for (int i = 0; i < len; i++) {
+                                    MetaIndex.registerDirectory(dirs[i]);
+                                }
+                                return new ExtClassLoader(dirs);
+                            }
+                        });
+            } catch (java.security.PrivilegedActionException e) {
+                throw (IOException) e.getException();
+            }
+        }
+
+        public ExtClassLoader(File[] dirs) throws IOException {
+            super(getExtURLs(dirs), (ClassLoader)null, sun.misc.Launcher.factory);
+            SharedSecrets.getJavaNetAccess().getURLClassPath(this).initLookupCache(this);
+        }
+
+        private static File[] getExtDirs() {
+            String s = System.getProperty("java.ext.dirs");
+            File[] dirs;
+            if (s != null) {
+                StringTokenizer st =
+                        new StringTokenizer(s, File.pathSeparator);
+                int count = st.countTokens();
+                dirs = new File[count];
+                for (int i = 0; i < count; i++) {
+                    dirs[i] = new File(st.nextToken());
+                }
+            } else {
+                dirs = new File[0];
+            }
+            return dirs;
+        }
+
+
+        private static URL[] getExtURLs(File[] var0) throws IOException {
+            Vector var1 = new Vector();
+
+            for(int var2 = 0; var2 < var0.length; ++var2) {
+                String[] var3 = var0[var2].list();
+                if (var3 != null) {
+                    for(int var4 = 0; var4 < var3.length; ++var4) {
+                        if (!var3[var4].equals("meta-index")) {
+                            File var5 = new File(var0[var2], var3[var4]);
+                            var1.add(sun.misc.Launcher.getFileURL(var5));
+                        }
+                    }
+                }
+            }
+
+            URL[] var6 = new URL[var1.size()];
+            var1.copyInto(var6);
+            return var6;
+        }
+    }
+
+    /**
+     * The class loader used for loading from java.class.path.
+     * runs in a restricted security context.
+     *
+     * 应用类加载器：
+     * 和ExtClassloader一样，只是将类的目录设置给URLClassLoader了。
+     *
+     * 同时需要说明的是，
+     *     参数1：类的加载目录，java.class.path。就是我们的项目目录
+     *     参数2：设置父类ExtClassLoader，实际上并不是真正的继承关系，
+     *          因为AppClassLoader和ExtClassLoader都extends URLClassLoader。
+     *          只是逻辑意义上的parent，目的是实现双亲委派模型。
+     */
+    static class AppClassLoader extends URLClassLoader {
+        final URLClassPath ucp = SharedSecrets.getJavaNetAccess().getURLClassPath(this);
+
+        public static ClassLoader getAppClassLoader(final ClassLoader extcl)
+                throws IOException {
+            final String s    = System.getProperty("java.class.path");
+            final File[] path = (s == null) ? new File[0] : getClassPath(s);
+
+
+            //将java.class.path的项目目录的类，同时设置逻辑意义的parent extcl，就是上边初始化的ExtClassLoader对象
+            return AccessController.doPrivileged(
+                    new PrivilegedAction<AppClassLoader>() {
+                        public AppClassLoader run() {
+                            URL[] urls =
+                                    (s == null) ? new URL[0] : pathToURLs(path);
+                            return new AppClassLoader(urls, extcl);
+                        }
+                    });
+        }
+
+
+        AppClassLoader(URL[] urls, ClassLoader parent) {
+            //第二个参数是parent，也就是实现逻辑父子关系的方式。将parent存储下来，然后暴露getParent()返回parent
+            super(urls, parent, sun.misc.Launcher.factory);
+            this.ucp.initLookupCache(this);
+        }
+    }
+}
+ ```
+ 
+ ### <span id="jump2_2">2、 ExtClassLoader 源码
+ 源码已经在Launcher里粘过了，这里总结一下。
+> 1、ExtClassLoader 是Launcher的内部类   
+> 2、extends URLClassLoader的子类   
+> 3、负责加载java.ext.dirs目录下的类    
+> 4、可以指定-D java.ext.dirs参数来添加和改变ExtClassLoader的加载路径
+
+
+ ### <span id="jump2_3">3、AppClassLoader</span>
+ > 1、AppClassLoader 是Launcher的内部类    
+ > 2、extends URLClassLoader的子类。    
+ > 3、负责加载java.class.path目录下的类，即用户代码里的类   
+ > 4、和ExtClassLoader是<font color=red>逻辑父子关系</font>，   
+ >> 4.1因为他们都是直接集成URLClassLoader,并没有真实的继承关系。    
+ >> 4.2但是初始化AppClassLoader时，实际使用的是URLClassLoader(dirs,parent)构造函数，第二个参数是存储一个parent对象。然后暴露一个getParent()方法实现逻辑意义上的父子关系
+ 
+ 
+ ### <span id="jump2_4">4、URLClassLoader</span>
+ 正如上边所说的，
+ - 1、AppClassLoader、ExtClassLoader实际上并没有继承关系，只是在AppClassLoader里存了一个叫做parent的ExtClassLoader对象而已，也就是逻辑父类。
+ - 2、那么按这样理解，是不是ExtClassLoader会存一个BootStrapClassLoader的对象呢？其实并没有，而是在ClassLoader中单独有一个native的c方法<font color=red> findBootstrapClass()</font> ，底层是c实现的。作用就是通过BootStrapClassLoader实现对类的加载。也就是说BootStrapClassLoader是底层c写的，并没有一个实际的java类。
+ 
+简单看一下继承关系：
+
+![image](https://note.youdao.com/yws/public/resource/f09878018de80d5a0831d3bb87c63123/xmlnote/WEBRESOURCE7cd66d601bcad45559fd45dfeb72c408/7062)
+
+看一下关键代码：
+
+```java
+import sun.reflect.CallerSensitive;
+import sun.reflect.Reflection;
+
+import java.io.Closeable;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.security.AccessController;
+import java.security.PrivilegedActionException;
+import java.security.PrivilegedExceptionAction;
+import java.security.SecureClassLoader;
+
+
+public class URLClassLoader extends SecureClassLoader implements Closeable {
+    ...
+}
+
+public class SecureClassLoader extends ClassLoader {
+    ...
+}
+
+public abstract class ClassLoader {
+
+    ...
+
+    //这个存储的就是逻辑父类的对象。
+    //1、AppClassLoader存储的是ExtClassLoader的对象。
+    //2、ExtClassLoader存储的是null。
+    //
+    // The parent class loader for delegation
+    // Note: VM hardcoded the offset of this field, thus all new fields
+    // must be added *after* it.
+    private final java.lang.ClassLoader parent;
+
+    @CallerSensitive
+    public final java.lang.ClassLoader getParent() {
+        if (parent == null)
+            return null;
+        SecurityManager sm = System.getSecurityManager();
+        if (sm != null) {
+            // Check access to the parent class loader
+            // If the caller's class loader is same as this class loader,
+            // permission check is performed.
+            checkClassLoaderPermission(parent, Reflection.getCallerClass());
+        }
+        return parent;
+    }
+
+
+    /**
+     * Returns a class loaded by the bootstrap class loader;
+     * or return null if not found.
+     
+     返回一个通过bootstrapClassLoader加载的class对象。如果没找到就返回null
+     */
+    private Class<?> findBootstrapClassOrNull(String name)
+    {
+        if (!checkName(name)) return null;
+
+        return findBootstrapClass(name);
+    }
+
+    // return null if not found
+    private native Class<?> findBootstrapClass(String name);
+
+}
+```
+ 
+  # <span id="jump4">三、双亲委派模型</span>
+ #### <font id="jump4_1">（1）工作流程：
+ 
+ - 1、类加载器收到加载请求，不会直接加载，而是直接抛给父加载器，类似<font color=red>冒泡式委托</font>。CustomerClassLoader -> AppClassLoader -> ExtClassLoader -> BootStrapClassLoader。
+ - 2、当加载时，父加载器加载类失败再依次调用子类加载器，进行加载。如果最终customerClassLoader也加载不到，就抛异常。类似<font color=red>递进式加载</font>
+ 
+![image](https://note.youdao.com/yws/public/resource/f09878018de80d5a0831d3bb87c63123/xmlnote/WEBRESOURCE8e8ed0638d8f24760d1f33e001d35c6f/7091)
+
+[图来自"宜春"大神的：【JVM篇二】](https://blog.csdn.net/qq_44543508/article/details/102983363)
+
+
+#### <font id="jump4_2">（2）设计意义
+- 保证jdk系统类的唯一性，安全性。
+
+
+    双亲委派模式的存在可以保证，java.lang.String等jdk类，不被自定义的类加载器随意替换，防止篡改。
+
+
+
+
+# <span id="jump5">四、ClassLoader源码分析
+### <span id="jump5_1">1、ClassLoader#loadClass()源码分析
+```java
+
+public abstract class ClassLoader {
+
+    protected Class<?> loadClass(String name, boolean resolve)
+            throws ClassNotFoundException
+    {
+        synchronized (getClassLoadingLock(name)) {
+            // 1、判断是否加载过该类
+            // First, check if the class has already been loaded
+            Class<?> c = findLoadedClass(name);
+            if (c == null) {
+                long t0 = System.nanoTime();
+                try {
+                    //2、如果有父加载器，则调用逻辑父加载器。加载成功就会存起来。在findClass里查找
+                    if (parent != null) {
+                        c = parent.loadClass(name, false);
+                    } else {
+                        //3、使用BootstrapClassLoader加载器加载类
+                        c = findBootstrapClassOrNull(name);
+                    }
+                } catch (ClassNotFoundException e) {
+                    // ClassNotFoundException thrown if class not found
+                    // from the non-null parent class loader
+                }
+
+                if (c == null) {
+                    // If still not found, then invoke findClass in order
+                    // to find the class.
+                    long t1 = System.nanoTime();
+                    //4、通过子类自定义的方法加载类。
+                    //这个方法是我们自定义类加载器的主要重写方法。默认是抛出异常。
+                    c = findClass(name);
+
+                    // this is the defining class loader; record the stats
+                    sun.misc.PerfCounter.getParentDelegationTime().addTime(t1 - t0);
+                    sun.misc.PerfCounter.getFindClassTime().addElapsedTimeFrom(t1);
+                    sun.misc.PerfCounter.getFindClasses().increment();
+                }
+            }
+            if (resolve) {
+                resolveClass(c);
+            }
+            return c;
+        }
+    }
+
+}
+```
+
+### <span id="jump5_2">2、<font color=red>URLClassLoader</font>#findClass()源码分析
+> <mark>这个方法的作用就是
+>> <mark>1、通过path路径找到.class文件，    
+>> 2、将.class加载进内存byte[]二进制数组，调用defineClass方法将byte[]转换成java可以使用的Class<?>字节码对象
+
+默认ClassLoader的findClass方法是空方法。
+
+```java
+protected Class<?> findClass(String name) throws ClassNotFoundException {
+    throw new ClassNotFoundException(name);
+}
+
+```
+我们这里以URLClassLoader的findClass为例看源码：
+```java
+
+/**
+ * Finds and loads the class with the specified name from the URL search
+ * path. Any URLs referring to JAR files are loaded and opened as needed until the class is found.
+ *
+ * 从URL路径中查找并加载具有特定名称的类。
+ * 所有JAR包下的class使用之前都需要先加载进内存。
+ * 
+ * @param name the name of the class
+ * @return the resulting class
+ * @exception ClassNotFoundException if the class could not be found,
+ *            or if the loader is closed.
+ * @exception NullPointerException if {@code name} is {@code null}.
+ */
+protected Class<?> findClass(final String name)
+        throws ClassNotFoundException
+{
+    final Class<?> result;
+    try {
+        result = AccessController.doPrivileged(
+                new PrivilegedExceptionAction<Class<?>>() {
+                    public Class<?> run() throws ClassNotFoundException {
+                        //name就是定义的类路径。
+                        // 例如：AppClassLoader默认设置的是java.class.path.上边Launcher源码里可以看到
+                        String path = name.replace('.', '/').concat(".class");
+                        Resource res = ucp.getResource(path, false);
+                        if (res != null) {
+                            try {
+                                //通过路径来找到对应的.class文件，并将二进制数据转换生成Class<?>对象
+                                return defineClass(name, res);
+                            } catch (IOException e) {
+                                throw new ClassNotFoundException(name, e);
+                            }
+                        } else {
+                            return null;
+                        }
+                    }
+                }, acc);
+    } catch (java.security.PrivilegedActionException pae) {
+        throw (ClassNotFoundException) pae.getException();
+    }
+    if (result == null) {
+        throw new ClassNotFoundException(name);
+    }
+    return result;
+}
+```
+
+### <span id="jump5_3">3、ClassLoader#defineClass(byte\[\] b, int off, int len)源码分析
+我们这里只看最内层重载函数。
+    
+    
+> 这个方法主要作用就是通过native的c语言的方法，<mark>将二进制数组转成java 可以使用的Class<?>字节码对象。
+    
+```java
+protected final Class<?> defineClass(String name, byte[] b, int off, int len,
+                                         ProtectionDomain protectionDomain)
+        throws ClassFormatError
+    {
+        protectionDomain = preDefineClass(name, protectionDomain);
+        String source = defineClassSourceLocation(protectionDomain);
+        //调用native方法，将二进制数组转成class对象
+        Class<?> c = defineClass1(name, b, off, len, protectionDomain, source);
+        postDefineClass(c, protectionDomain);
+        return c;
+    }
+```
+
+### <span id="jump5_4">4、小结
+
+- <mark>loadClass() 作用就是实现双亲委派机制的逻辑
+- <mark>findClass() 作用就是通过path，找到.class文件，并加载进内存（放到byte[]二进制数组中）。
+- <mark>defineClass() 作用就是将二进制数组byte[]转成java能使用的Class<?>字节码对象
+
+
+
+ # <span id="jump6">五、自定义类加载器</span>
+
+### <font id="jump6_1">1、作用
+ <font color=red>核心是扩展java虚拟机的动态加载类的机制</font>，用户可以定制类的加载逻辑，比如：热更新。就是通过自定类加载器，来加载网络请求的类。将.class文件通过网络下载到本地，然后通过自定义的类加载器加载。
+ 
+### <font id="jump6_2">2、实现逻辑
+通过上边对ClassLoader的源码分析。已经很清楚了，我们可以直接继承ClassLoader
+- 1、<font color=red>重写loadClass()</font>方法。但是jdk1.2之后官方已经<font color=red>不建议</font>直接重写loadClass()了，因为那有可能不符合双亲委派机制了，毕竟是在这个方法实现的双亲委派逻辑。
+- 2、<font color=red>重写findClass()</font>方法，通常来说，我们重写这个方法足够了。这个方法是找到.class文件并加载进内存，存到byte[]二进制数组中。
+
+### <font id="jump6_3">3、示例
+
+#### （1）创建一个Demo.class文件
+- 1、创建package目录com.test的Demo.java文件。
+    
+
+    注意package包名必须有，这是java文件规范。默认就是文件目录。
+- 2、使用javac Demo.java 命令直接生成Demo.class文件
+- 3、放到/Users/wangzheng/workspace_java/com/test 目录下，准备使用自定义加载器加载
+```java
+package com.test;
+
+public class Demo {
+    public Demo(){
+        System.out.println("================================");
+        System.out.println("我是MyClassLoader加载器加载进内存的。");
+        System.out.println("================================");
+    }
+}
+
+```
+#### （2）自定义MyClassLoader类加载器
+```java
+
+import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
+
+public class MyClassLoaderDemo extends ClassLoader {
+
+    //自定义根目录
+    String customRootPath = "";
+
+    public MyClassLoaderDemo(String rootPath) {
+        this.customRootPath = rootPath;
+    }
+
+    @Override
+    protected Class<?> findClass(String name) throws ClassNotFoundException {
+        final Class<?> result;
+        //1、拼接成自定义的.class存储目录。也就是Demo.class的目录
+        String filePath = customRootPath + '/' + name.replace('.', '/').concat(".class");
+
+        //2、通过Demo.class目录，文件流方式加载进byte[]二进制数组。
+        byte[] bytes = loadPathToByteArray(filePath);
+
+        //3、调用native的方法，将byte[]二进制数组，转成Class<?>字节码对象
+        result = defineClass(name, bytes, 0, bytes.length);
+
+        return result;
+    }
+
+    //将路径转成byte[]
+    private byte[] loadPathToByteArray(String filePath) {
+
+        try {
+            //通过路径，文件流读取到byte[]二进制数组中
+            FileInputStream fis = new FileInputStream(filePath);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+            int bufferSize = 1024;
+            byte[] buffer = new byte[bufferSize];
+            int length = 0;
+            while ((length = fis.read(buffer)) != -1) {
+                baos.write(buffer, 0, length);
+            }
+            return baos.toByteArray();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static void main(String[] args) {
+        try {
+
+            //设置Demo.class文件的根目录。
+            MyClassLoaderDemo myClassLoaderDemo = new MyClassLoaderDemo("/Users/wangzheng/workspace_java");
+            //加载Demo.class
+            Class<?> aClass = myClassLoaderDemo.loadClass("com.test.Demo");
+            //实例化Demo对象
+            Object o = aClass.newInstance();
+
+            System.out.println(o.getClass().getClassLoader());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+```
+
+
+打印结果：
+
+        
+    ================================
+    我是MyClassLoader加载器加载进内存的。
+    ================================
+    com.crm.web.test.MyClassLoaderDemo@64a294a6
+        
+        
+
+
+# <font id="jump7">六、加载类的三种方式
+### <font id="jump7_1">1、分类
+    
+> 1、静态加载，通过<font color=red>new</font>关键字来实例化对象
+>
+> 2、动态加载，通过<font color=red>Class.forName()</font>方式动态加载对象(反射加载)，然后调用类的<font color=red>newInstance()</font>实例化
+>
+> 3、动态加载，通过类加载器的<font color=red>loadClass()</font>方法来加载类，然后调用类的<font color=red>newInstance()</font>方法实例化对象
+
+### <font id="jump7_2">2、三种方式的区别
+#### （1）第一种和第二种，使用的是默认类加载器（this.getClass.getClassLoader）。第三种可以使用用户自定义的类加载器
+#### （2）如果需要在当前路径外加载.class文件，那么只能用第三种方式。
+#### （3） <mark>Class.forName()和ClassLoader.loadClass()区别：
+
+
+> 1、Class.forName(className)一个参数的方法，默认是会加载进内存的同时给static分配内存（初始化）。
+>
+> 2、Class.forName(className,initialize,loader)中间initialize可以控制是否进行(初始化)
+>
+> 3、ClassLoader.loadClass()方式是不会给static分配内存（<font color=red>初始化：参考上一篇文章。）。
+
+
+
+```java
+public static Class<?> forName(String className)
+                throws ClassNotFoundException {
+    Class<?> caller = Reflection.getCallerClass();
+    //第二个参数，就是是否进行初始化阶段。
+    return forName0(className, true, ClassLoader.getClassLoader(caller), caller);
+}
+
+/**
+ * 这种三个参数的，initialize就是决定是否进行初始化的。
+ **/
+ public static Class<?> forName(String name, boolean initialize,
+                                   ClassLoader loader)
+        throws ClassNotFoundException
+    {
+        Class<?> caller = null;
+        SecurityManager sm = System.getSecurityManager();
+        if (sm != null) {
+            // Reflective call to get caller class is only needed if a security manager
+            // is present.  Avoid the overhead of making this call otherwise.
+            caller = Reflection.getCallerClass();
+            if (sun.misc.VM.isSystemDomainLoader(loader)) {
+                ClassLoader ccl = ClassLoader.getClassLoader(caller);
+                if (!sun.misc.VM.isSystemDomainLoader(ccl)) {
+                    sm.checkPermission(
+                        SecurityConstants.GET_CLASSLOADER_PERMISSION);
+                }
+            }
+        }
+        return forName0(name, initialize, loader, caller);
+    }
+```
