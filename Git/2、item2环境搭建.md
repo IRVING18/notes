@@ -72,3 +72,12 @@
     
     设置完可以看下vim ~/.gitconfig 
 ```
+
+#### 8、设置vim高亮
+```shell
+    cp /usr/share/vim/vimrc     ~/.vimrc
+    vim ~/.vimrc
+        设置如下
+        syntax on
+        set nu!
+```
