@@ -17,10 +17,8 @@
     - [9.OvershootInterpolator 向前甩一定值后再回到原来位置](#jump2_1_9)
   - [（2）自定义插值器](#jump2_2)
   - [（3）插值器的辅助妙用](#jump2_3)
-- [三、高级使用方式](#jump3)
-  - [（1）AnimatorSet 多个动画结合，可以控制执行顺序](#jump3_1) 
-  - [（2）PropertyValuesHolder.ofXXX() + ObjectAnimator.ofPropertyValuesHolder() 多个属性动画组合](#jump3_2)
-  - [（3）Keyframe.ofXXX() + PropertyValuesHolders.ofKeyframe() + ObjectAnimator.ofPropertyValuesHolder() 把同一个属性拆分](#jump3_3)
+  
+  
 
 - [文中部分图片来源:Carson带你学安卓](https://www.jianshu.com/p/2f19fe1e3ca1)
 
@@ -362,57 +360,4 @@ public class AccelerateDecelerateInterpolator implements Interpolator, NativeInt
     }
 ```
 
-# <p id="jump3" />三、高级使用
-## <p id="jump3_1" /> （1）AnimatorSet 多个动画结合，可以控制执行顺序
-```java
-     ObjectAnimator animator1 = ObjectAnimator.ofFloat(view, "alpha", 0, 1);
-     animator1.setDuration(2000);
-     ObjectAnimator animator2 = ObjectAnimator.ofFloat(view, "translationX", -200, 200);
-     animator2.setDuration(500);
-     ObjectAnimator animator3 = ObjectAnimator.ofFloat(view, "rotation", 0, 1080);
-     animator3.setDuration(1000);
-
-     AnimatorSet animatorSet = new AnimatorSet();
-     // 用 AnimatorSet 的方法来让三个动画协作执行
-     // 要求 1： animator1 先执行，animator2 在 animator1 完成后立即开始
-     // 要求 2： animator2 和 animator3 同时开始
-     animatorSet.play(animator1).before(animator2);
-     animatorSet.playTogether(animator2,animator3);
-
-     animatorSet.start();
-```
-
-## <p id="jump3_2" /> （2）PropertyValuesHolder.ofXXX()和ObjectAnimator.ofPropertyValuesHolder() 多个动画一起执行
-```java
-     // 使用 PropertyValuesHolder.ofFloat() 来创建不同属性的动画值方案
-     // 第一个： scaleX 从 0 到 1
-     // 第二个： scaleY 从 0 到 1
-     // 第三个： alpha 从 0 到 1
-     PropertyValuesHolder holder1 = PropertyValuesHolder.ofFloat("scaleX", 0, 1);
-     PropertyValuesHolder holder2 = PropertyValuesHolder.ofFloat("scaleY", 0, 1);
-     PropertyValuesHolder holder3 = PropertyValuesHolder.ofFloat("alpha", 0, 1);
-     // 然后，用 ObjectAnimator.ofPropertyValuesHolder() 把三个属性合并，创建 Animator 然后执行
-     ObjectAnimator objectAnimator = ObjectAnimator.ofPropertyValuesHolder(view, holder1, holder2, holder3);
-     objectAnimator.setDuration(2000);
-     objectAnimator.setInterpolator(new BounceInterpolator());
-     objectAnimator.start();
-```
-
-## <p id="jump3_3" />（3）Keyframe.ofXXX() + PropertyValuesHolders.ofKeyframe() + ObjectAnimator.ofPropertyValuesHolder()把同一个属性拆分
-除了合并多个属性和调配多个动画，你还可以在 PropertyValuesHolder 的基础上更进一步，通过设置 Keyframe （关键帧），把同一个动画属性拆分成多个阶段。例如，你可以让一个进度增加到 100% 后再「反弹」回来。
-
-```java
-     // 在 0% 处开始
-     Keyframe keyframe1 = Keyframe.ofFloat(0, 0);  
-     // 时间经过 50% 的时候，动画完成度 100%
-     Keyframe keyframe2 = Keyframe.ofFloat(0.5f, 100);  
-     // 时间见过 100% 的时候，动画完成度倒退到 80%，即反弹 20%
-     Keyframe keyframe3 = Keyframe.ofFloat(1, 80);  
-     PropertyValuesHolder holder = PropertyValuesHolder.ofKeyframe("progress", keyframe1, keyframe2, keyframe3);
-     
-     ObjectAnimator animator = ObjectAnimator.ofPropertyValuesHolder(view, holder);  
-     animator.start();  
-```
-
-![](https://github.com/IRVING18/notes/blob/master/android/file/keyframe.gif)
 
