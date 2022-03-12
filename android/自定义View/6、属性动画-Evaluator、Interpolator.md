@@ -17,10 +17,8 @@
     - [9.OvershootInterpolator 向前甩一定值后再回到原来位置](#jump2_1_9)
   - [（2）自定义插值器](#jump2_2)
   - [（3）插值器的辅助妙用](#jump2_3)
-- [三、高级使用方式](#jump3)
-  - [（1）AnimatorSet 多个动画结合，可以控制执行顺序](#jump3_1) 
-  - [（2）PropertyValuesHolder.ofXXX() + ObjectAnimator.ofPropertyValuesHolder() 多个属性动画组合](#jump3_2)
-  - [（3）Keyframe.ofXXX() + PropertyValuesHolders.ofKeyframe() + ObjectAnimator.ofPropertyValuesHolder() 把同一个属性拆分](#jump3_3)
+  
+  
 
 - [文中部分图片来源:Carson带你学安卓](https://www.jianshu.com/p/2f19fe1e3ca1)
 
@@ -127,6 +125,10 @@ animator.start();
     }
 }
 ```
+![](https://github.com/IRVING18/notes/blob/master/android/file/cubic-bezier.gif)
+
+
+[贝塞曲线：二次、三次模拟网站](https://cubic-bezier.com/#.01,1.53,0,1.54)
 > 配合ObjectAnimator使用   
 ```java
 private PointF mPointF;
@@ -214,6 +216,79 @@ mButton.startAnimation(alphaAnimation);
 ![](https://github.com/IRVING18/notes/blob/master/android/file/interpolator.gif)
 
 ## <p id="jump2_2" />（2）自定义插值器
+> 根据动画的进度（0%-100%）计算出当前属性值改变的百分比
+
+### 1、实现方式： Interpolator 或 TimeInterpolator 接口
+> 1、补间动画 实现 Interpolator接口；属性动画实现TimeInterpolator接口
+> 
+> 2、TimeInterpolator接口是属性动画中新增的，用于兼容Interpolator接口，这使得所有过去的Interpolator实现类都可以直接在属性动画使用
+
+
+```java
+// Interpolator接口
+public interface Interpolator {  
+
+    // 内部只有一个方法：getInterpolation()
+     float getInterpolation(float input) {  
+        // 参数说明
+        // input值值变化范围是0-1，且随着动画进度（0% - 100% ）均匀变化
+        // 即动画开始时，input值 = 0；动画结束时input = 1
+        // 而中间的值则是随着动画的进度（0% - 100%）在0到1之间均匀增加
+        
+      ...// 插值器的计算逻辑
+
+      return xxx；
+      // 返回的值就是用于估值器继续计算的fraction值，
+    }  
+
+// TimeInterpolator接口
+// 同上
+public interface TimeInterpolator {  
+  
+    float getInterpolation(float input){
+         ...
+    };  
+}  
+```
+
+看两个系统的插值器源码就理解参数意义了
+
+```java
+/*
+ * 匀速差值器：LinearInterpolator
+ */
+@HasNativeInterpolator  
+public class LinearInterpolator extends BaseInterpolator implements NativeInterpolatorFactory {  
+   
+    ... // 仅贴出关键代码
+
+    public float getInterpolation(float input) {  
+        return input;  
+        // 没有对input值进行任何逻辑处理，直接返回
+        // 即input值 = fraction值
+        // 因为input值是匀速增加的，因此fraction值也是匀速增加的，所以动画的运动情况也是匀速的，所以是匀速插值器
+    }  
+
+/*
+ * 先加速再减速 差值器:AccelerateDecelerateInterpolator
+ */
+@HasNativeInterpolator  
+public class AccelerateDecelerateInterpolator implements Interpolator, NativeInterpolatorFactory {  
+      
+    ... // 仅贴出关键代码
+    
+    public float getInterpolation(float input) {  
+        return (float)(Math.cos((input + 1) * Math.PI) / 2.0f) + 0.5f;
+        // input的运算逻辑如下：
+        // 使用了余弦函数，因input的取值范围是0到1，那么cos函数中的取值范围就是π到2π。
+        // 而cos(π)的结果是-1，cos(2π)的结果是1
+        // 所以该值除以2加上0.5后，getInterpolation()方法最终返回的结果值还是在0到1之间。只不过经过了余弦运算之后，最终的结果不再是匀速增加的了，而是经历了一个先加速后减速的过程
+        // 所以最终，fraction值 = 运算后的值 = 先加速后减速
+        // 所以该差值器是先加速再减速的
+    }  
+}
+```
+
 ## <p id="jump2_3" />（3）插值器的辅助妙用
 ## 用法一：
 > Interpolator插值器的用法，getInterpolation(percent百分比)能获取插值器相关参数
@@ -289,57 +364,4 @@ mButton.startAnimation(alphaAnimation);
     }
 ```
 
-# <p id="jump3" />三、高级使用
-## <p id="jump3_1" /> （1）AnimatorSet 多个动画结合，可以控制执行顺序
-```java
-     ObjectAnimator animator1 = ObjectAnimator.ofFloat(view, "alpha", 0, 1);
-     animator1.setDuration(2000);
-     ObjectAnimator animator2 = ObjectAnimator.ofFloat(view, "translationX", -200, 200);
-     animator2.setDuration(500);
-     ObjectAnimator animator3 = ObjectAnimator.ofFloat(view, "rotation", 0, 1080);
-     animator3.setDuration(1000);
-
-     AnimatorSet animatorSet = new AnimatorSet();
-     // 用 AnimatorSet 的方法来让三个动画协作执行
-     // 要求 1： animator1 先执行，animator2 在 animator1 完成后立即开始
-     // 要求 2： animator2 和 animator3 同时开始
-     animatorSet.play(animator1).before(animator2);
-     animatorSet.playTogether(animator2,animator3);
-
-     animatorSet.start();
-```
-
-## <p id="jump3_2" /> （2）PropertyValuesHolder.ofXXX()和ObjectAnimator.ofPropertyValuesHolder() 多个动画一起执行
-```java
-     // 使用 PropertyValuesHolder.ofFloat() 来创建不同属性的动画值方案
-     // 第一个： scaleX 从 0 到 1
-     // 第二个： scaleY 从 0 到 1
-     // 第三个： alpha 从 0 到 1
-     PropertyValuesHolder holder1 = PropertyValuesHolder.ofFloat("scaleX", 0, 1);
-     PropertyValuesHolder holder2 = PropertyValuesHolder.ofFloat("scaleY", 0, 1);
-     PropertyValuesHolder holder3 = PropertyValuesHolder.ofFloat("alpha", 0, 1);
-     // 然后，用 ObjectAnimator.ofPropertyValuesHolder() 把三个属性合并，创建 Animator 然后执行
-     ObjectAnimator objectAnimator = ObjectAnimator.ofPropertyValuesHolder(view, holder1, holder2, holder3);
-     objectAnimator.setDuration(2000);
-     objectAnimator.setInterpolator(new BounceInterpolator());
-     objectAnimator.start();
-```
-
-## <p id="jump3_3" />（3）Keyframe.ofXXX() + PropertyValuesHolders.ofKeyframe() + ObjectAnimator.ofPropertyValuesHolder()把同一个属性拆分
-除了合并多个属性和调配多个动画，你还可以在 PropertyValuesHolder 的基础上更进一步，通过设置 Keyframe （关键帧），把同一个动画属性拆分成多个阶段。例如，你可以让一个进度增加到 100% 后再「反弹」回来。
-
-```java
-     // 在 0% 处开始
-     Keyframe keyframe1 = Keyframe.ofFloat(0, 0);  
-     // 时间经过 50% 的时候，动画完成度 100%
-     Keyframe keyframe2 = Keyframe.ofFloat(0.5f, 100);  
-     // 时间见过 100% 的时候，动画完成度倒退到 80%，即反弹 20%
-     Keyframe keyframe3 = Keyframe.ofFloat(1, 80);  
-     PropertyValuesHolder holder = PropertyValuesHolder.ofKeyframe("progress", keyframe1, keyframe2, keyframe3);
-     
-     ObjectAnimator animator = ObjectAnimator.ofPropertyValuesHolder(view, holder);  
-     animator.start();  
-```
-
-![](https://github.com/IRVING18/notes/blob/master/android/file/keyframe.gif)
 
