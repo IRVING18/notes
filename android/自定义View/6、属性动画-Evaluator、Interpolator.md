@@ -125,6 +125,10 @@ animator.start();
     }
 }
 ```
+![](https://github.com/IRVING18/notes/blob/master/android/file/cubic-bezier.gif)
+
+
+[贝塞曲线：二次、三次模拟网站](https://cubic-bezier.com/#.01,1.53,0,1.54)
 > 配合ObjectAnimator使用   
 ```java
 private PointF mPointF;
