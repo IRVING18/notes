@@ -88,7 +88,8 @@ animator.start();
     animator.start();
 ```
 ### <p id="jump1_2_2" />2.CubicBezierPointFTypeEvaluator 贝塞尔曲线
-![](https://github.com/IRVING18/notes/blob/master/android/file/cubic.gif)
+
+<img src="https://github.com/IRVING18/notes/blob/master/android/file/cubic.gif" alt="效果图" width="100" height="300" />
 ```java
     public class CubicBezierPointFTypeEvaluator implements TypeEvaluator<PointF> {
     /**
